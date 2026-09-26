@@ -1130,7 +1130,6 @@
         window.saveApiKey = function() {
             const value = document.getElementById('api-key-input').value.trim();
             if (!value) { showToast('API Key kosong.', 'fa-triangle-exclamation', 'text-yellow-400'); return; }
-            if (!value.startsWith('AIza')) { showToast('Format key tidak valid (harus mulai AIza...).', 'fa-triangle-exclamation', 'text-yellow-400'); return; }
             apiKey = value;
             localStorage.setItem('wm-api-key', apiKey);
             updateApiBanner();
