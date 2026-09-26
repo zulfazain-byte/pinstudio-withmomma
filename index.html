@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="id" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#8FA396">
+    <meta name="description" content="WithMomma Studio — AI Content Production Suite untuk brand parenting premium">
+    <title>WithMomma Studio — AI Content Production Suite</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="WithMomma">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;700&family=Libre+Baskerville:ital,wght@0,400;1,400&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        cormorant: ['Cormorant Garamond', 'serif'],
+                        dm: ['DM Sans', 'sans-serif'],
+                        baskerville: ['Libre Baskerville', 'serif'],
+                        mont: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        momma: {
+                            light: '#FAF7F2',
+                            sage: '#8FA396',
+                            rose: '#D4A396',
+                            clay: '#B87A6B',
+                            dark: '#2D3748',
+                            soft: '#F4EFE6',
+                            border: '#E2E8F0'
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.4s ease-out',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'pop': 'pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
+                        pop: { '0%': { transform: 'scale(0.9)' }, '50%': { transform: 'scale(1.05)' }, '100%': { transform: 'scale(1)' } }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root { color-scheme: light; }
+        .dark { color-scheme: dark; }
+
+        body {
+            background-color: #FAF7F2;
+            color: #2D3748;
+            transition: background-color 0.3s, color 0.3s;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .dark body { background-color: #0F1419; color: #E2E8F0; }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+        ::-webkit-scrollbar-thumb:hover { background: #8FA396; }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        .dark .glass-panel {
+            background: rgba(20, 26, 35, 0.85);
+            border-color: rgba(255,255,255,0.06);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.4);
+        }
+
+        .dark .bg-white { background-color: #141A23 !important; }
+        .dark .bg-gray-50 { background-color: #1A212C !important; }
+        .dark .bg-gray-100 { background-color: #1E2733 !important; }
+        .dark .border-gray-100 { border-color: #232D3B !important; }
+        .dark .border-gray-200 { border-color: #2A3646 !important; }
+        .dark .text-gray-400 { color: #7B8A9E !important; }
+        .dark .text-gray-500 { color: #94A3B8 !important; }
+        .dark .text-gray-600 { color: #B0BEC5 !important; }
+        .dark .text-gray-700 { color: #CBD5E1 !important; }
+        .dark .text-gray-800 { color: #E2E8F0 !important; }
+        .dark .text-momma-dark { color: #E2E8F0 !important; }
+        .dark .bg-gray-900 { background-color: #060A0F !important; }
+        .dark input, .dark select, .dark textarea {
+            background-color: #1A212C !important;
+            color: #E2E8F0 !important;
+            border-color: #2A3646 !important;
+        }
+        .dark header { background-color: rgba(15, 20, 25, 0.9) !important; border-color: #232D3B !important; }
+
+        .img-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            background-color: #f1f5f9;
+            transition: all 0.25s ease;
+            cursor: zoom-in;
+        }
+        .dark .img-card { background-color: #1A212C; }
+        .img-card:hover {
+            box-shadow: 0 20px 35px -10px rgba(143, 163, 150, 0.45);
+            transform: translateY(-3px);
+        }
+        .img-card.selected { outline: 3px solid #8FA396; outline-offset: 2px; }
+
+        .img-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 55%);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 1rem;
+            gap: 6px;
+        }
+        .img-card:hover .img-overlay,
+        .img-card:active .img-overlay { opacity: 1; }
+
+        .card-action {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.92);
+            color: #2D3748;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px;
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+        .card-action:hover, .card-action:active { background: #8FA396; color: white; transform: scale(1.1); }
+        .card-action.active { background: #e11d48; color: white; }
+
+        .drop-zone { border: 2px dashed #cbd5e1; transition: all 0.2s ease; }
+        .dark .drop-zone { border-color: #334155; }
+        .drop-zone.dragover { border-color: #8FA396; background-color: #f4efe6; }
+        .dark .drop-zone.dragover { background-color: #1E2733; }
+
+        .loader-dots div { animation-timing-function: cubic-bezier(0, 1, 1, 0); }
+        .loader-dots div:nth-child(1) { left: 8px; animation: loader-dots1 0.6s infinite; }
+        .loader-dots div:nth-child(2) { left: 8px; animation: loader-dots2 0.6s infinite; }
+        .loader-dots div:nth-child(3) { left: 32px; animation: loader-dots2 0.6s infinite; }
+        .loader-dots div:nth-child(4) { left: 56px; animation: loader-dots3 0.6s infinite; }
+        @keyframes loader-dots1 { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        @keyframes loader-dots3 { 0% { transform: scale(1); } 100% { transform: scale(0); } }
+        @keyframes loader-dots2 { 0% { transform: translate(0, 0); } 100% { transform: translate(24px, 0); } }
+
+        #toast {
+            visibility: hidden; opacity: 0;
+            transform: translateX(-50%) translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #toast.show { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .editor-tab.active { border-bottom: 2px solid #8FA396; color: #8FA396; font-weight: 600; }
+
+        .text-overlay-preview {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            padding: 10%;
+        }
+
+        .prompt-chip {
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 500;
+            background: #F4EFE6;
+            color: #2D3748;
+            cursor: pointer;
+            transition: all 0.15s;
+            border: 1px solid transparent;
+            text-align: left;
+        }
+        .dark .prompt-chip { background: #1A212C; color: #CBD5E1; }
+        .prompt-chip:hover, .prompt-chip:active { background: #8FA396; color: white; transform: translateY(-1px); }
+
+        #cmd-palette { backdrop-filter: blur(12px); }
+        .cmd-item { transition: background 0.1s; cursor: pointer; }
+        .cmd-item:hover, .cmd-item.active { background: rgba(143, 163, 150, 0.15); }
+
+        .skeleton {
+            background: linear-gradient(90deg, #e2e8f0 0%, #f1f5f9 50%, #e2e8f0 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s linear infinite;
+        }
+        .dark .skeleton {
+            background: linear-gradient(90deg, #1A212C 0%, #232D3B 50%, #1A212C 100%);
+            background-size: 200% 100%;
+        }
+
+        .progress-bar { height: 3px; background: #E2E8F0; overflow: hidden; border-radius: 3px; }
+        .dark .progress-bar { background: #232D3B; }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8FA396, #B87A6B);
+            transition: width 0.4s ease;
+            border-radius: 3px;
+        }
+
+        input[type="range"] { -webkit-appearance: none; height: 4px; border-radius: 2px; background: #E2E8F0; }
+        .dark input[type="range"] { background: #2A3646; }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 16px; height: 16px;
+            border-radius: 50%; background: #8FA396; cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        kbd {
+            background: #E2E8F0; padding: 2px 6px; border-radius: 4px;
+            font-size: 10px; font-weight: 600; font-family: ui-monospace, monospace;
+            border: 1px solid #CBD5E1; color: #475569;
+        }
+        .dark kbd { background: #232D3B; border-color: #334155; color: #94A3B8; }
+
+        @media (max-width: 640px) {
+            .img-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 40%); }
+            .img-overlay .card-action { width: 30px; height: 30px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans text-sm">
+
+    <!-- ================= HEADER ================= -->
+    <header class="bg-white/95 backdrop-blur-md shadow-sm py-3 px-4 sm:px-6 sticky top-0 z-40 border-b border-momma-sage/20">
+        <div class="max-w-[1600px] mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-momma-sage to-momma-clay text-white flex items-center justify-center font-serif italic text-lg font-bold shadow-md">W</div>
+                <div>
+                    <h1 class="font-serif text-base sm:text-xl font-bold text-momma-dark tracking-wide leading-tight">With<span class="italic text-momma-sage">Momma</span> Studio</h1>
+                    <p class="text-[9px] text-gray-500 uppercase tracking-widest font-semibold">Content Suite v3.0</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <button onclick="openApiKeyModal()" id="api-key-btn" class="text-xs font-medium text-gray-600 hover:text-momma-sage transition flex items-center justify-center bg-gray-100 w-9 h-9 rounded-full" title="API Key Settings">
+                    <i class="fa-solid fa-key"></i>
+                </button>
+                <button onclick="openCmdPalette()" class="hidden md:flex items-center gap-2 text-xs font-medium text-gray-500 hover:text-momma-sage transition bg-gray-100 px-3 py-1.5 rounded-full">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search <kbd class="ml-1">⌘K</kbd>
+                </button>
+                <button onclick="openContentStudio()" class="text-xs font-medium text-gray-600 hover:text-momma-sage transition flex items-center gap-2 bg-gray-100 px-2 sm:px-3 py-1.5 rounded-full">
+                    <i class="fa-solid fa-feather-pointed"></i> <span class="hidden sm:inline">Studio</span>
+                </button>
+                <button onclick="document.getElementById('history-section').scrollIntoView({behavior: 'smooth'})" class="hidden sm:flex text-xs font-medium text-gray-600 hover:text-momma-sage transition items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-full">
+                    <i class="fa-solid fa-clock-rotate-left"></i> History
+                </button>
+                <button onclick="toggleDarkMode()" id="dark-toggle" class="text-xs font-medium text-gray-600 hover:text-momma-sage transition flex items-center justify-center bg-gray-100 w-9 h-9 rounded-full" title="Dark mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= API KEY BANNER ================= -->
+    <div id="api-banner" class="hidden bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-200 px-4 py-2.5">
+        <div class="max-w-[1600px] mx-auto flex items-center justify-between gap-3 flex-wrap">
+            <p class="text-xs text-amber-900 flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-amber-600"></i>
+                <span><strong>API Key belum diatur.</strong> Anda perlu Google AI Studio API Key untuk generate gambar & teks.</span>
+            </p>
+            <button onclick="openApiKeyModal()" class="text-xs bg-amber-600 hover:bg-amber-700 text-white font-semibold px-3 py-1.5 rounded-lg shadow-sm transition">Set Sekarang</button>
+        </div>
+    </div>
+
+    <!-- ================= MAIN ================= -->
+    <main class="flex-grow max-w-[1600px] mx-auto w-full px-3 sm:px-4 py-4 sm:py-6 flex flex-col xl:flex-row gap-4 sm:gap-6 items-start h-full">
+
+        <!-- ============ SIDEBAR ============ -->
+        <aside class="w-full xl:w-[450px] flex-shrink-0 glass-panel rounded-2xl p-4 sm:p-5 xl:sticky xl:top-24 max-h-none xl:max-h-[calc(100vh-120px)] overflow-y-auto">
+
+            <div class="flex border-b border-gray-200 mb-5 -mx-4 sm:-mx-5 px-2">
+                <button class="sidebar-tab active flex-1 py-2.5 text-xs font-semibold text-momma-sage border-b-2 border-momma-sage uppercase tracking-wide" onclick="switchSidebarTab('generate', event)"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Generate</button>
+                <button class="sidebar-tab flex-1 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide hover:text-gray-800 transition" onclick="switchSidebarTab('library', event)"><i class="fa-solid fa-bookmark mr-1"></i> Library</button>
+                <button class="sidebar-tab flex-1 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide hover:text-gray-800 transition" onclick="switchSidebarTab('brand', event)"><i class="fa-solid fa-palette mr-1"></i> Brand</button>
+            </div>
+
+            <!-- TAB: Generate -->
+            <div id="sidebar-tab-generate">
+                <div class="mb-5">
+                    <label class="block text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">Quick Campaign Presets</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="applyPreset('maternity')" class="text-[11px] bg-momma-sage/10 text-momma-sage hover:bg-momma-sage hover:text-white border border-momma-sage/30 px-3 py-1.5 rounded-lg transition-colors font-semibold">Maternity</button>
+                        <button type="button" onclick="applyPreset('toddler')" class="text-[11px] bg-momma-rose/10 text-momma-clay hover:bg-momma-rose hover:text-white border border-momma-rose/30 px-3 py-1.5 rounded-lg transition-colors font-semibold">Toddler</button>
+                        <button type="button" onclick="applyPreset('nursery')" class="text-[11px] bg-gray-100 text-gray-700 hover:bg-gray-700 hover:text-white border border-gray-200 px-3 py-1.5 rounded-lg transition-colors font-semibold">Nursery</button>
+                        <button type="button" onclick="applyPreset('reel')" class="text-[11px] bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white border border-indigo-100 px-3 py-1.5 rounded-lg transition-colors font-semibold">Reel</button>
+                    </div>
+                </div>
+
+                <form id="generator-form" class="space-y-5">
+                    <div>
+                        <div class="flex justify-between items-end mb-1.5">
+                            <label class="block text-xs font-bold text-gray-800">Core Concept</label>
+                            <div class="flex gap-1">
+                                <button type="button" onclick="openPromptLibrary()" class="text-[10px] bg-white border border-gray-200 text-gray-600 px-2 py-1 rounded shadow-sm hover:shadow-md transition-all flex items-center gap-1 font-medium">
+                                    <i class="fa-solid fa-bookmark"></i> Library
+                                </button>
+                                <button type="button" id="magic-btn" class="text-[10px] bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-2 py-1 rounded shadow-sm hover:shadow-md transition-all flex items-center gap-1 font-medium">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Enhance
+                                </button>
+                            </div>
+                        </div>
+                        <textarea id="prompt" rows="3" class="w-full rounded-xl border border-gray-200 shadow-sm focus:border-momma-sage focus:ring-1 focus:ring-momma-sage transition-all p-3 text-sm bg-white" placeholder="Describe your vision (e.g., A peaceful mother holding her baby in a bright nursery...)"></textarea>
+                        <div class="flex justify-between mt-1.5">
+                            <p class="text-[10px] text-gray-400"><i class="fa-solid fa-circle-info mr-1"></i>Press <kbd>⌘↵</kbd> to generate</p>
+                            <p id="prompt-counter" class="text-[10px] text-gray-400">0 chars</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-800 mb-1.5">Reference Image (Img2Img)</label>
+                        <div id="drop-zone" class="drop-zone w-full h-24 rounded-xl flex flex-col items-center justify-center bg-gray-50 cursor-pointer relative overflow-hidden group">
+                            <input type="file" id="image-upload" accept="image/jpeg, image/png, image/webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                            <div id="upload-prompt" class="flex flex-col items-center pointer-events-none transition-opacity">
+                                <i class="fa-regular fa-image text-2xl text-gray-400 mb-1 group-hover:text-momma-sage transition-colors"></i>
+                                <p class="text-[11px] text-gray-500 text-center px-4">Upload reference<br><span class="text-momma-sage font-medium">Drag & drop or click</span></p>
+                            </div>
+                            <div id="upload-preview" class="hidden absolute inset-0 w-full h-full bg-black/5 flex items-center justify-center">
+                                <img id="preview-img" src="" class="h-full object-cover opacity-60">
+                                <button type="button" id="remove-img-btn" class="absolute top-2 right-2 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md hover:bg-red-600 z-20">
+                                    <i class="fa-solid fa-times"></i>
+                                </button>
+                                <div class="absolute bottom-1 bg-black/70 text-white text-[9px] px-2 py-0.5 rounded uppercase tracking-wider">Reference Active</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-gray-700 mb-1.5">Platform Aspect Ratio</label>
+                            <div class="flex bg-gray-100 p-1 rounded-lg">
+                                <label class="flex-1 text-center">
+                                    <input type="radio" name="ratio" value="9:16" class="peer hidden" checked>
+                                    <div class="peer-checked:bg-white peer-checked:shadow-sm peer-checked:text-momma-dark text-gray-500 text-xs font-semibold py-1.5 rounded-md cursor-pointer transition-all"><i class="fa-brands fa-pinterest text-red-500 mr-1"></i>9:16</div>
+                                </label>
+                                <label class="flex-1 text-center">
+                                    <input type="radio" name="ratio" value="1:1" class="peer hidden">
+                                    <div class="peer-checked:bg-white peer-checked:shadow-sm peer-checked:text-momma-dark text-gray-500 text-xs font-semibold py-1.5 rounded-md cursor-pointer transition-all"><i class="fa-brands fa-instagram text-pink-500 mr-1"></i>1:1</div>
+                                </label>
+                                <label class="flex-1 text-center">
+                                    <input type="radio" name="ratio" value="16:9" class="peer hidden">
+                                    <div class="peer-checked:bg-white peer-checked:shadow-sm peer-checked:text-momma-dark text-gray-500 text-xs font-semibold py-1.5 rounded-md cursor-pointer transition-all"><i class="fa-solid fa-desktop text-blue-500 mr-1"></i>16:9</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-span-1">
+                            <label class="block text-[10px] font-bold text-gray-600 mb-1 uppercase tracking-wide">Main Subject</label>
+                            <select id="subject" class="w-full rounded-lg border-gray-200 text-xs p-2 bg-gray-50 focus:bg-white focus:ring-1 focus:ring-momma-sage outline-none">
+                                <optgroup label="Pregnancy & Maternity">
+                                    <option value="pregnant woman, elegant maternity portrait">Elegant Maternity Portrait</option>
+                                    <option value="pregnant couple, loving maternity moment">Pregnant Couple</option>
+                                    <option value="pregnant woman doing gentle prenatal yoga">Prenatal Yoga</option>
+                                    <option value="pregnant woman at ultrasound appointment, joyful">Ultrasound Moment</option>
+                                    <option value="packing a hospital bag for labor, organized">Packing Hospital Bag</option>
+                                </optgroup>
+                                <optgroup label="Newborn & Motherhood">
+                                    <option value="mother and newborn baby bonding, skin-to-skin">Mother & Newborn</option>
+                                    <option value="father gently holding newborn baby">Father & Newborn</option>
+                                    <option value="mother nursing or feeding baby peacefully">Feeding / Nursing</option>
+                                    <option value="peaceful sleeping newborn baby, cozy bed">Sleeping Newborn</option>
+                                    <option value="mother bathing baby, gentle water splashes">Baby Bath Time</option>
+                                </optgroup>
+                                <optgroup label="Toddler & Family">
+                                    <option value="mother and toddler interacting playfully">Mother & Toddler</option>
+                                    <option value="toddler taking first steps with mother">Toddler First Steps</option>
+                                    <option value="happy young family with baby in living room">Family Lifestyle</option>
+                                    <option value="toddler eating healthy food, aesthetic high chair">Toddler Meal Time</option>
+                                    <option value="modern mother working from home with baby nearby">Working Mother</option>
+                                </optgroup>
+                                <optgroup label="Products & Aesthetics">
+                                    <option value="premium baby essentials flatlay">Product Flatlay</option>
+                                    <option value="aesthetic modern nursery room interior">Nursery Interior</option>
+                                    <option value="healthy pregnancy nutrition meal, fresh ingredients">Pregnancy Meal</option>
+                                    <option value="postpartum mother relaxing, self-care">Postpartum Self-Care</option>
+                                    <option value="aesthetic baby clothes hanging in nursery">Baby Wardrobe</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="col-span-1">
+                            <label class="block text-[10px] font-bold text-gray-600 mb-1 uppercase tracking-wide">Lighting & Vibe</label>
+                            <select id="setting" class="w-full rounded-lg border-gray-200 text-xs p-2 bg-gray-50 focus:bg-white focus:ring-1 focus:ring-momma-sage outline-none">
+                                <optgroup label="Natural Daylight">
+                                    <option value="soft morning natural light, bright, airy, cozy">Morning Light</option>
+                                    <option value="sun-drenched room, bright sunlight casting soft shadows">Sun-Drenched</option>
+                                    <option value="crisp spring morning light, fresh, revitalizing">Crisp Spring</option>
+                                    <option value="soft directional window light, chiaroscuro, natural">Window Light</option>
+                                </optgroup>
+                                <optgroup label="Golden Hour">
+                                    <option value="golden hour, warm cinematic sun rays">Golden Hour</option>
+                                    <option value="sunset silhouette, glowing background, dramatic but warm">Sunset Silhouette</option>
+                                    <option value="soft twilight blue hour lighting, calming, serene">Blue Hour</option>
+                                    <option value="cinematic photography with prominent sun-kissed lens flares, glowing">Lens Flare</option>
+                                </optgroup>
+                                <optgroup label="Studio">
+                                    <option value="clean studio spotlight, professional, isolated background">Clean Studio</option>
+                                    <option value="high key lighting, extremely bright, ethereal, pure">High Key</option>
+                                    <option value="softbox studio lighting, perfectly even beauty light, flawless">Softbox Beauty</option>
+                                    <option value="cinematic rim lighting, defining subjects edges, premium">Rim Light</option>
+                                </optgroup>
+                                <optgroup label="Mood">
+                                    <option value="dimmed moody lighting, intimate, emotional depth">Moody & Intimate</option>
+                                    <option value="soft diffused overcast light, even illumination, gentle">Soft Overcast</option>
+                                    <option value="cozy indoor warm lighting, amber glow, comforting">Cozy Amber</option>
+                                    <option value="soft pastel wash lighting, dreamy, delicate, tender">Dreamy Pastel</option>
+                                    <option value="soft glowing light with dreamy bokeh background, magical">Magical Bokeh</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="col-span-1">
+                            <label class="block text-[10px] font-bold text-gray-600 mb-1 uppercase tracking-wide">Color Palette</label>
+                            <select id="palette" class="w-full rounded-lg border-gray-200 text-xs p-2 bg-gray-50 focus:bg-white focus:ring-1 focus:ring-momma-sage outline-none">
+                                <optgroup label="Trimester">
+                                    <option value="sage green, mint pastel green, natural earthy vibe">Sage / Mint</option>
+                                    <option value="dusty rose, mauve, dark brownish pink, warm soft">Dusty Rose</option>
+                                    <option value="light blue, baby blue, soft sky colors, calming">Baby Blue</option>
+                                </optgroup>
+                                <optgroup label="Nutrition & Planning">
+                                    <option value="teal, dark sage green, deep earthy tones, fresh">Teal / Sage</option>
+                                    <option value="coral, warm peach, soft pinkish orange, inviting">Coral / Peach</option>
+                                    <option value="warm beige, soft mustard, creamy yellow, comforting">Beige / Mustard</option>
+                                    <option value="slate blue, dusty blue, greyish blue, serene">Slate Blue</option>
+                                </optgroup>
+                                <optgroup label="Emotional">
+                                    <option value="warm terracotta, orange rust, grounding earthy clay">Terracotta / Rust</option>
+                                    <option value="soft lavender, lilac, gentle light purple, romantic">Lavender</option>
+                                    <option value="deep purple, dark plum, mixed with terracotta rust">Deep Plum</option>
+                                </optgroup>
+                                <optgroup label="Planner">
+                                    <option value="soft pink, light magenta, delicate pastel pink">Soft Pink</option>
+                                    <option value="rose pink, classic soft pink, elegant feminine">Rose Pink</option>
+                                    <option value="lavender, light bright purple, clean pastel">Light Purple</option>
+                                    <option value="teal and pink color block, modern vibrant contrast">Teal & Pink</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="col-span-1">
+                            <label class="block text-[10px] font-bold text-gray-600 mb-1 uppercase tracking-wide">Art Direction</label>
+                            <select id="style" class="w-full rounded-lg border-gray-200 text-xs p-2 bg-gray-50 focus:bg-white focus:ring-1 focus:ring-momma-sage outline-none">
+                                <option value="high-end editorial photography, Vogue style">Editorial (Vogue)</option>
+                                <option value="authentic UGC, iPhone 15 Pro, relatable, trendy">UGC / iPhone</option>
+                                <option value="minimalist Apple-style product photography, vast negative space">Minimalist</option>
+                                <option value="cinematic documentary style, raw emotion, 35mm film">Cinematic</option>
+                                <option value="soft focus ethereal, dreamy, romantic, fine art photography">Fine Art</option>
+                            </select>
+                        </div>
+
+                        <div class="col-span-2 bg-white/50 p-3 rounded-lg border border-gray-100 mt-2">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="block text-[10px] font-bold text-gray-600 uppercase tracking-wide"><i class="fa-solid fa-fingerprint mr-1"></i> Character Seed</label>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="lock-seed" class="sr-only peer">
+                                    <div class="w-7 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-momma-sage"></div>
+                                    <span class="ml-2 text-[9px] font-medium text-gray-500">Lock Character</span>
+                                </label>
+                            </div>
+                            <input type="number" id="seed-input" class="w-full rounded-lg border-gray-200 border focus:border-momma-sage focus:ring-1 focus:ring-momma-sage p-2 text-xs bg-gray-50 text-gray-400" placeholder="Auto-generated per image" disabled>
+                            <p class="text-[9px] text-gray-400 mt-1 leading-tight">Locking the seed helps maintain face and style consistency.</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-800 mb-1.5">Exclude (Negative Prompt)</label>
+                        <input type="text" id="negative-prompt" class="w-full rounded-lg border-gray-200 border shadow-sm focus:border-red-400 focus:ring-1 focus:ring-red-400 p-2 text-xs bg-white" placeholder="e.g., messy background, plastic toys...">
+                        <div class="flex flex-wrap gap-1.5 mt-2">
+                            <button type="button" onclick="addNegative('blurry, low quality, distorted')" class="text-[10px] bg-red-50 text-red-600 border border-red-100 px-2 py-0.5 rounded hover:bg-red-100 transition">+ Quality</button>
+                            <button type="button" onclick="addNegative('watermark, text, logo, signature')" class="text-[10px] bg-red-50 text-red-600 border border-red-100 px-2 py-0.5 rounded hover:bg-red-100 transition">+ Clean Brand</button>
+                            <button type="button" onclick="addNegative('plastic, artificial, fake, robotic')" class="text-[10px] bg-red-50 text-red-600 border border-red-100 px-2 py-0.5 rounded hover:bg-red-100 transition">+ Natural</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1.5">Variation Count</label>
+                        <div class="flex bg-gray-100 p-1 rounded-lg">
+                            <label class="flex-1 text-center">
+                                <input type="radio" name="varcount" value="2" class="peer hidden">
+                                <div class="peer-checked:bg-white peer-checked:shadow-sm peer-checked:text-momma-dark text-gray-500 text-xs font-semibold py-1.5 rounded-md cursor-pointer transition-all">2</div>
+                            </label>
+                            <label class="flex-1 text-center">
+                                <input type="radio" name="varcount" value="4" class="peer hidden" checked>
+                                <div class="peer-checked:bg-white peer-checked:shadow-sm peer-checked:text-momma-dark text-gray-500 text-xs font-semibold py-1.5 rounded-md cursor-pointer transition-all">4</div>
+                            </label>
+                            <label class="flex-1 text-center">
+                                <input type="radio" name="varcount" value="6" class="peer hidden">
+                                <div class="peer-checked:bg-white peer-checked:shadow-sm peer-checked:text-momma-dark text-gray-500 text-xs font-semibold py-1.5 rounded-md cursor-pointer transition-all">6</div>
+                            </label>
+                            <label class="flex-1 text-center">
+                                <input type="radio" name="varcount" value="8" class="peer hidden">
+                                <div class="peer-checked:bg-white peer-checked:shadow-sm peer-checked:text-momma-dark text-gray-500 text-xs font-semibold py-1.5 rounded-md cursor-pointer transition-all">8</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="generate-btn" class="w-full bg-momma-dark hover:bg-gray-800 text-white font-semibold py-3.5 rounded-xl shadow-lg transition-all duration-200 transform active:scale-[0.98] flex justify-center items-center gap-2 mt-2">
+                        <i class="fa-solid fa-layer-group"></i> Generate Variations
+                    </button>
+                </form>
+
+                <div class="mt-5 bg-green-50/80 rounded-lg p-3 border border-green-100 flex gap-3 items-start">
+                    <i class="fa-solid fa-shield-halved text-green-600 mt-0.5"></i>
+                    <p class="text-[10px] text-green-800 leading-relaxed font-medium">
+                        <strong class="block mb-0.5 text-xs">Brand Safety Active</strong>
+                        AI is restricted from generating watermarks, logos, or text overlays.
+                    </p>
+                </div>
+            </div>
+
+            <!-- TAB: Library -->
+            <div id="sidebar-tab-library" class="hidden space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">Prompt Templates</label>
+                    <div class="grid grid-cols-1 gap-2">
+                        <button class="prompt-chip" onclick="loadPromptTemplate('maternity-glow')">🌸 Glowing maternity portrait by window</button>
+                        <button class="prompt-chip" onclick="loadPromptTemplate('nursery-detail')">🪴 Minimalist nursery corner with plants</button>
+                        <button class="prompt-chip" onclick="loadPromptTemplate('flatlay-baby')">👶 Baby essentials flatlay on linen</button>
+                        <button class="prompt-chip" onclick="loadPromptTemplate('toddler-play')">🧸 Toddler playing with wooden toys</button>
+                        <button class="prompt-chip" onclick="loadPromptTemplate('feeding')">🤱 Peaceful nursing moment</button>
+                        <button class="prompt-chip" onclick="loadPromptTemplate('bump-hands')">💕 Hands cradling pregnant belly</button>
+                        <button class="prompt-chip" onclick="loadPromptTemplate('family-lifestyle')">👨‍👩‍👧 Cozy family morning in bed</button>
+                        <button class="prompt-chip" onclick="loadPromptTemplate('hospital-bag')">🧳 Organized hospital bag flatlay</button>
+                        <button class="prompt-chip" onclick="loadPromptTemplate('postpartum')">🛁 Postpartum self-care ritual</button>
+                        <button class="prompt-chip" onclick="loadPromptTemplate('ultrasound')">📸 Ultrasound reveal moment</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: Brand -->
+            <div id="sidebar-tab-brand" class="hidden space-y-4">
+                <div class="bg-blue-50 text-blue-800 text-[10px] p-3 rounded-lg flex gap-2">
+                    <i class="fa-solid fa-circle-info mt-0.5"></i>
+                    <p>Brand kit disimpan otomatis di browser Anda.</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1.5">Brand Name</label>
+                    <input type="text" id="brand-name" class="w-full rounded-lg border-gray-200 border focus:ring-1 focus:ring-momma-sage focus:border-momma-sage p-2 text-sm bg-white" value="WithMomma">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1.5">Brand Colors</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div>
+                            <label class="text-[10px] text-gray-500 block mb-1">Primary</label>
+                            <input type="color" id="brand-primary" value="#8FA396" class="w-full h-8 rounded cursor-pointer border-0 p-0">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-gray-500 block mb-1">Secondary</label>
+                            <input type="color" id="brand-secondary" value="#B87A6B" class="w-full h-8 rounded cursor-pointer border-0 p-0">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-gray-500 block mb-1">Text</label>
+                            <input type="color" id="brand-text" value="#2D3748" class="w-full h-8 rounded cursor-pointer border-0 p-0">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1.5">Default Font Pair</label>
+                    <select id="brand-font" class="w-full rounded-lg border-gray-200 text-xs p-2 bg-gray-50 focus:bg-white focus:ring-1 focus:ring-momma-sage outline-none">
+                        <option value="Playfair Display|Inter">Editorial (Playfair + Inter)</option>
+                        <option value="Cormorant Garamond|DM Sans">Elegant (Cormorant + DM Sans)</option>
+                        <option value="Libre Baskerville|Montserrat">Classic (Baskerville + Montserrat)</option>
+                        <option value="Playfair Display|Montserrat">Bold Editorial</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1.5">Logo Watermark</label>
+                    <div class="drop-zone w-full h-20 rounded-lg flex flex-col items-center justify-center bg-gray-50 cursor-pointer relative overflow-hidden">
+                        <input type="file" id="logo-upload" accept="image/png, image/svg+xml" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        <div id="logo-prompt" class="flex flex-col items-center pointer-events-none">
+                            <i class="fa-solid fa-signature text-xl text-gray-400 mb-1"></i>
+                            <p class="text-[10px] text-gray-500">Upload PNG/SVG logo</p>
+                        </div>
+                        <div id="logo-preview" class="hidden absolute inset-0 w-full h-full flex items-center justify-center bg-white/90">
+                            <img id="logo-img" src="" class="max-h-14 object-contain">
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="saveBrandKit()" class="w-full bg-momma-sage hover:bg-momma-dark text-white font-semibold py-2.5 rounded-lg shadow-md transition flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-check"></i> Save Brand Kit
+                </button>
+            </div>
+        </aside>
+
+        <!-- ============ CANVAS ============ -->
+        <section class="w-full flex-grow flex flex-col min-h-[500px] space-y-6">
+
+            <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 flex-grow flex flex-col">
+                <div class="flex justify-between items-end mb-4 border-b border-gray-100 pb-3 flex-wrap gap-2">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-serif font-bold text-momma-dark">Studio Canvas</h2>
+                        <p class="text-xs text-gray-500">Active generation results.</p>
+                    </div>
+                    <div id="canvas-actions" class="hidden gap-2 items-center flex-wrap">
+                        <span class="text-[10px] text-gray-500 bg-gray-100 px-2 py-1 rounded"><i class="fa-solid fa-check-circle text-momma-sage mr-1"></i><span id="selected-count">0</span> selected</span>
+                        <button onclick="downloadSelected()" class="text-xs bg-momma-sage hover:bg-momma-dark text-white px-3 py-1.5 rounded-lg font-semibold transition flex items-center gap-1">
+                            <i class="fa-solid fa-download"></i> Batch Save
+                        </button>
+                        <button onclick="clearSelection()" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1.5 rounded-lg font-semibold transition">Clear</button>
+                    </div>
+                </div>
+
+                <div id="progress-wrap" class="hidden mb-4">
+                    <div class="flex justify-between text-[10px] text-gray-500 mb-1">
+                        <span id="progress-label">Initializing...</span>
+                        <span id="progress-pct">0%</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+                </div>
+
+                <div id="empty-state" class="flex-grow flex flex-col items-center justify-center text-center p-8 bg-gray-50/50 rounded-xl border border-dashed border-gray-200">
+                    <div class="w-16 h-16 bg-white shadow-sm rounded-full flex items-center justify-center mb-4 border border-gray-100">
+                        <i class="fa-solid fa-image text-2xl text-momma-sage/60"></i>
+                    </div>
+                    <h3 class="font-serif text-lg font-semibold text-gray-800">Workspace is empty</h3>
+                    <p class="text-xs text-gray-500 mt-2 max-w-sm">Configure your campaign settings on the left to start generating high-end visual assets.</p>
+                    <div class="flex gap-2 mt-5 flex-wrap justify-center">
+                        <button onclick="openPromptLibrary()" class="text-xs bg-white border border-gray-200 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-50 transition font-medium"><i class="fa-solid fa-bookmark mr-1"></i> Templates</button>
+                        <button onclick="applyPreset('maternity')" class="text-xs bg-momma-sage text-white px-3 py-2 rounded-lg hover:bg-momma-dark transition font-medium"><i class="fa-solid fa-bolt mr-1"></i> Try Preset</button>
+                    </div>
+                </div>
+
+                <div id="loading-state" class="hidden flex-grow flex flex-col items-center justify-center text-center p-8">
+                    <div class="inline-block relative w-20 h-20 loader-dots mb-4">
+                        <div class="absolute top-[33px] w-3 h-3 rounded-full bg-momma-sage"></div>
+                        <div class="absolute top-[33px] w-3 h-3 rounded-full bg-momma-sage"></div>
+                        <div class="absolute top-[33px] w-3 h-3 rounded-full bg-momma-sage"></div>
+                        <div class="absolute top-[33px] w-3 h-3 rounded-full bg-momma-sage"></div>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-momma-sage animate-pulse">Rendering Variations...</h3>
+                    <p class="text-xs text-gray-500 mt-2">Applying brand guidelines and image-to-image processing.</p>
+                </div>
+
+                <div id="error-state" class="hidden flex-grow flex flex-col items-center justify-center text-center p-8">
+                    <i class="fa-solid fa-triangle-exclamation text-4xl text-red-400 mb-3"></i>
+                    <h3 class="font-serif text-lg font-semibold text-red-800">Generation Failed</h3>
+                    <p id="error-msg" class="text-xs text-red-600 mt-1 max-w-md">API error occurred.</p>
+                    <button onclick="document.getElementById('generator-form').requestSubmit()" class="mt-4 text-xs bg-red-100 text-red-700 px-4 py-2 rounded-lg font-medium hover:bg-red-200 transition"><i class="fa-solid fa-rotate-right mr-1"></i> Retry</button>
+                </div>
+
+                <div id="results-container" class="hidden w-full h-full"></div>
+            </div>
+
+            <div id="history-section" class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100">
+                <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-3 flex-wrap gap-2">
+                    <h2 class="text-lg font-serif font-bold text-momma-dark"><i class="fa-solid fa-clock-rotate-left text-gray-400 mr-2"></i>Session History</h2>
+                    <div class="flex gap-2 items-center">
+                        <div class="flex bg-gray-100 p-0.5 rounded-lg">
+                            <button onclick="filterHistory('all', event)" class="history-filter active text-[10px] font-semibold px-2.5 py-1 rounded-md text-momma-dark bg-white shadow-sm">All</button>
+                            <button onclick="filterHistory('fav', event)" class="history-filter text-[10px] font-semibold px-2.5 py-1 rounded-md text-gray-500">★ Fav</button>
+                        </div>
+                        <span id="history-count" class="text-[10px] bg-gray-100 text-gray-600 px-2 py-1 rounded font-medium">0 items</span>
+                    </div>
+                </div>
+
+                <div id="history-grid" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+                    <p id="history-empty" class="col-span-full text-center text-xs text-gray-400 py-6 italic">No history yet.</p>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- ================= API KEY MODAL ================= -->
+    <div id="api-modal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4" style="background: rgba(15,23,42,0.9); backdrop-filter: blur(8px);">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-slide-up">
+            <div class="p-5 border-b border-gray-100 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-momma-sage to-momma-clay text-white flex items-center justify-center">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif font-bold text-lg text-momma-dark">API Key</h3>
+                        <p class="text-[10px] text-gray-500">Google AI Studio</p>
+                    </div>
+                </div>
+                <button onclick="closeApiKeyModal()" class="text-gray-400 hover:text-gray-700 w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100 transition">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+
+            <div class="p-5 space-y-4">
+                <div class="bg-blue-50 text-blue-800 text-[11px] p-3 rounded-lg flex gap-2 leading-relaxed">
+                    <i class="fa-solid fa-circle-info mt-0.5"></i>
+                    <div>
+                        Dapatkan API Key gratis di<br>
+                        <a href="https://aistudio.google.com/apikey" target="_blank" class="font-semibold underline">aistudio.google.com/apikey</a>
+                        <br>Key disimpan lokal di HP Anda dan tidak dikirim ke server lain.
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1.5">API Key Anda</label>
+                    <div class="relative">
+                        <input type="password" id="api-key-input" placeholder="AIzaSy..." class="w-full rounded-lg border border-gray-200 p-3 pr-10 text-sm bg-gray-50 focus:bg-white focus:ring-1 focus:ring-momma-sage outline-none font-mono">
+                        <button onclick="toggleApiVisibility()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 w-7 h-7 rounded-full hover:bg-gray-100 transition">
+                            <i class="fa-solid fa-eye" id="api-eye-icon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="saveApiKey()" class="flex-1 bg-momma-sage hover:bg-momma-dark text-white font-semibold py-2.5 rounded-lg shadow-md transition flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-check"></i> Simpan
+                    </button>
+                    <button onclick="clearApiKey()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-4 py-2.5 rounded-lg transition text-sm">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+
+                <p id="api-status" class="text-[11px] text-gray-500 text-center"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PRO EDITOR MODAL ================= -->
+    <div id="editor-modal" class="fixed inset-0 z-50 hidden bg-gray-900/95 backdrop-blur-md opacity-0 transition-opacity duration-300 flex flex-col lg:flex-row overflow-hidden">
+
+        <button id="editor-close" class="absolute top-4 left-4 bg-white/10 hover:bg-white/20 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg transition z-50">
+            <i class="fa-solid fa-times"></i>
+        </button>
+
+        <div class="flex-grow flex items-center justify-center p-4 sm:p-8 relative overflow-hidden h-[45vh] lg:h-full">
+            <div class="relative max-h-full max-w-full shadow-2xl rounded-lg overflow-hidden bg-black/20">
+                <img id="editor-img" src="" alt="Preview" class="max-h-[45vh] lg:max-h-[90vh] max-w-full object-contain relative z-10 transition-all">
+                <div id="overlay-preview" class="text-overlay-preview z-20 hidden">
+                    <div id="preview-badge" class="text-[10px] uppercase tracking-widest font-bold mb-3 opacity-0 transition-opacity self-start px-3 py-1 rounded-full" style="background: rgba(0,0,0,0.5); color: white; font-family: 'Inter', sans-serif;"></div>
+                    <h1 id="preview-title" class="font-bold mb-2 drop-shadow-md" style="font-family: 'Playfair Display', serif; color: white; font-size: 36px; line-height: 1.1;"></h1>
+                    <p id="preview-subtitle" class="font-light tracking-wide drop-shadow-md whitespace-pre-line" style="font-family: 'Inter', sans-serif; color: rgba(255,255,255,0.9); font-size: 14px;"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full lg:w-[420px] flex-shrink-0 bg-white h-[55vh] lg:h-full shadow-2xl flex flex-col border-l border-gray-200 z-30" id="editor-sidebar">
+            <div class="p-4 sm:p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                <h3 class="font-serif font-bold text-base sm:text-lg text-momma-dark"><i class="fa-solid fa-wand-magic-sparkles text-momma-sage mr-2"></i>Pro Studio</h3>
+                <div class="flex gap-2">
+                    <button id="editor-undo" class="bg-gray-100 hover:bg-gray-200 text-gray-600 w-8 h-8 rounded-lg text-xs font-semibold transition flex items-center justify-center" title="Reset overlay"><i class="fa-solid fa-rotate-left"></i></button>
+                    <button id="editor-download" class="bg-momma-sage hover:bg-momma-dark text-white px-3 sm:px-4 py-2 rounded-lg text-xs font-semibold shadow-md transition flex items-center gap-2">
+                        <i class="fa-solid fa-download"></i> 4K
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex border-b border-gray-200 px-2 bg-white overflow-x-auto">
+                <button class="editor-tab active flex-shrink-0 py-3 px-3 sm:px-4 text-xs text-gray-500 hover:text-gray-800 transition uppercase tracking-wide" onclick="switchTab('typography', event)"><i class="fa-solid fa-font mr-1"></i> Type</button>
+                <button class="editor-tab flex-shrink-0 py-3 px-3 sm:px-4 text-xs text-gray-500 hover:text-gray-800 transition uppercase tracking-wide" onclick="switchTab('filters', event)"><i class="fa-solid fa-sliders mr-1"></i> Filters</button>
+                <button class="editor-tab flex-shrink-0 py-3 px-3 sm:px-4 text-xs text-gray-500 hover:text-gray-800 transition uppercase tracking-wide" onclick="switchTab('templates', event)"><i class="fa-solid fa-table-cells mr-1"></i> Layouts</button>
+                <button class="editor-tab flex-shrink-0 py-3 px-3 sm:px-4 text-xs text-gray-500 hover:text-gray-800 transition uppercase tracking-wide" onclick="switchTab('magic-edit', event)"><i class="fa-solid fa-eraser mr-1"></i> AI Edit</button>
+            </div>
+
+            <div class="flex-grow overflow-y-auto p-4 sm:p-5 bg-white">
+
+                <div id="tab-typography" class="space-y-4">
+                    <div class="bg-blue-50 text-blue-800 text-[10px] p-3 rounded-lg flex gap-2">
+                        <i class="fa-solid fa-circle-info mt-0.5"></i>
+                        <p>Text akan dirender dalam high-resolution saat export.</p>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-600 mb-1 uppercase tracking-wide">Badge (Top Tag)</label>
+                        <input type="text" id="typo-badge" class="w-full rounded-lg border-gray-200 border focus:ring-1 focus:ring-momma-sage p-2 text-sm" placeholder="e.g., NEW POST">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Headline</label>
+                        <input type="text" id="typo-title" class="w-full rounded-lg border-gray-200 border focus:ring-1 focus:ring-momma-sage p-2 text-sm" placeholder="e.g., Hospital Bag Checklist">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Subtitle</label>
+                        <textarea id="typo-sub" rows="2" class="w-full rounded-lg border-gray-200 border focus:ring-1 focus:ring-momma-sage p-2 text-xs" placeholder="e.g., The essential guide..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-600 mb-1 uppercase tracking-wide">Font Pair</label>
+                        <select id="typo-font" class="w-full rounded border-gray-200 bg-gray-50 text-xs p-2 focus:ring-1 focus:ring-momma-sage outline-none">
+                            <option value="Playfair Display|Inter">Editorial — Playfair + Inter</option>
+                            <option value="Cormorant Garamond|DM Sans">Elegant — Cormorant + DM Sans</option>
+                            <option value="Libre Baskerville|Montserrat">Classic — Baskerville + Montserrat</option>
+                            <option value="Playfair Display|Montserrat">Bold — Playfair + Montserrat</option>
+                            <option value="Montserrat|Inter">Modern — Montserrat + Inter</option>
+                            <option value="DM Sans|Inter">Minimal — DM Sans + Inter</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-600 mb-1 uppercase">Position</label>
+                            <select id="typo-pos" class="w-full rounded border-gray-200 bg-gray-50 text-xs p-1.5 focus:ring-1 focus:ring-momma-sage outline-none">
+                                <option value="center">Center</option>
+                                <option value="top">Top</option>
+                                <option value="bottom">Bottom</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-600 mb-1 uppercase">Color</label>
+                            <div class="flex gap-2 items-center mt-0.5">
+                                <input type="color" id="typo-color" value="#ffffff" class="w-7 h-7 rounded cursor-pointer border-0 p-0">
+                                <input type="text" id="typo-color-hex" value="#ffffff" class="w-full text-[10px] font-mono border border-gray-200 rounded px-2 py-1.5" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="applyTypographyPreset('hero')" class="text-[10px] bg-gray-50 border border-gray-200 hover:border-momma-sage rounded py-1.5 font-medium transition">Hero</button>
+                        <button onclick="applyTypographyPreset('bottom')" class="text-[10px] bg-gray-50 border border-gray-200 hover:border-momma-sage rounded py-1.5 font-medium transition">Bottom</button>
+                        <button onclick="applyTypographyPreset('badge')" class="text-[10px] bg-gray-50 border border-gray-200 hover:border-momma-sage rounded py-1.5 font-medium transition">Tag</button>
+                    </div>
+                    <div class="flex items-center gap-2 mt-2">
+                        <input type="checkbox" id="typo-scrim" class="rounded accent-momma-sage">
+                        <label for="typo-scrim" class="text-[11px] text-gray-600">Dark scrim behind text</label>
+                    </div>
+                </div>
+
+                <div id="tab-filters" class="space-y-5 hidden">
+                    <div class="bg-indigo-50 text-indigo-800 text-[10px] p-3 rounded-lg flex gap-2">
+                        <i class="fa-solid fa-sliders mt-0.5"></i>
+                        <p>Filters di-bake ke dalam image saat export.</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between mb-1"><label class="text-[11px] font-semibold text-gray-700">Brightness</label><span class="text-[10px] text-gray-400" id="f-bright-val">100%</span></div>
+                            <input type="range" id="f-bright" min="50" max="150" value="100" class="w-full">
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1"><label class="text-[11px] font-semibold text-gray-700">Contrast</label><span class="text-[10px] text-gray-400" id="f-contrast-val">100%</span></div>
+                            <input type="range" id="f-contrast" min="50" max="150" value="100" class="w-full">
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1"><label class="text-[11px] font-semibold text-gray-700">Saturation</label><span class="text-[10px] text-gray-400" id="f-sat-val">100%</span></div>
+                            <input type="range" id="f-sat" min="0" max="200" value="100" class="w-full">
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1"><label class="text-[11px] font-semibold text-gray-700">Warmth</label><span class="text-[10px] text-gray-400" id="f-warm-val">0</span></div>
+                            <input type="range" id="f-warm" min="-30" max="30" value="0" class="w-full">
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1"><label class="text-[11px] font-semibold text-gray-700">Vignette</label><span class="text-[10px] text-gray-400" id="f-vig-val">0</span></div>
+                            <input type="range" id="f-vig" min="0" max="60" value="0" class="w-full">
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1"><label class="text-[11px] font-semibold text-gray-700">Blur</label><span class="text-[10px] text-gray-400" id="f-blur-val">0px</span></div>
+                            <input type="range" id="f-blur" min="0" max="6" value="0" class="w-full">
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-gray-100">
+                        <label class="block text-[10px] font-bold text-gray-600 mb-2 uppercase tracking-wide">Preset Looks</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="applyFilterPreset('warm')" class="text-[10px] bg-orange-50 text-orange-700 border border-orange-100 rounded py-2 font-medium hover:bg-orange-100 transition">☀️ Warm</button>
+                            <button onclick="applyFilterPreset('airy')" class="text-[10px] bg-blue-50 text-blue-700 border border-blue-100 rounded py-2 font-medium hover:bg-blue-100 transition">🕊️ Airy</button>
+                            <button onclick="applyFilterPreset('cinematic')" class="text-[10px] bg-slate-100 text-slate-700 border border-slate-200 rounded py-2 font-medium hover:bg-slate-200 transition">🎬 Cinematic</button>
+                            <button onclick="applyFilterPreset('moody')" class="text-[10px] bg-purple-50 text-purple-700 border border-purple-100 rounded py-2 font-medium hover:bg-purple-100 transition">🌙 Moody</button>
+                            <button onclick="applyFilterPreset('reset')" class="col-span-2 text-[10px] bg-gray-100 text-gray-600 rounded py-2 font-medium hover:bg-gray-200 transition"><i class="fa-solid fa-rotate-left mr-1"></i> Reset</button>
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-gray-100">
+                        <div class="flex items-center gap-2">
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="watermark-toggle" class="sr-only peer">
+                                <div class="w-7 h-4 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-momma-sage"></div>
+                            </label>
+                            <span class="text-[11px] text-gray-600">Logo watermark</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-templates" class="space-y-4 hidden">
+                    <div class="bg-momma-soft text-momma-dark text-[10px] p-3 rounded-lg flex gap-2" style="background:#F4EFE6">
+                        <i class="fa-solid fa-layer-group mt-0.5"></i>
+                        <p>One-click layouts untuk format social media.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="applyLayout('pin')" class="p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-momma-sage transition text-left">
+                            <i class="fa-brands fa-pinterest text-red-500 text-lg"></i>
+                            <p class="text-[11px] font-semibold mt-1">Pinterest Pin</p>
+                        </button>
+                        <button onclick="applyLayout('carousel')" class="p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-momma-sage transition text-left">
+                            <i class="fa-brands fa-instagram text-pink-500 text-lg"></i>
+                            <p class="text-[11px] font-semibold mt-1">IG Carousel</p>
+                        </button>
+                        <button onclick="applyLayout('story')" class="p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-momma-sage transition text-left">
+                            <i class="fa-solid fa-mobile-screen text-purple-500 text-lg"></i>
+                            <p class="text-[11px] font-semibold mt-1">Story / Reel</p>
+                        </button>
+                        <button onclick="applyLayout('quote')" class="p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-momma-sage transition text-left">
+                            <i class="fa-solid fa-quote-left text-momma-sage text-lg"></i>
+                            <p class="text-[11px] font-semibold mt-1">Quote Card</p>
+                        </button>
+                        <button onclick="applyLayout('checklist')" class="p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-momma-sage transition text-left">
+                            <i class="fa-solid fa-list-check text-momma-clay text-lg"></i>
+                            <p class="text-[11px] font-semibold mt-1">Checklist</p>
+                        </button>
+                        <button onclick="applyLayout('product')" class="p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-momma-sage transition text-left">
+                            <i class="fa-solid fa-tag text-amber-600 text-lg"></i>
+                            <p class="text-[11px] font-semibold mt-1">Product</p>
+                        </button>
+                    </div>
+                    <div class="pt-4 border-t border-gray-100">
+                        <label class="block text-[10px] font-bold text-gray-600 mb-2 uppercase tracking-wide">Quick Text</label>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button onclick="quickText('New Blog Post', 'Read the full guide →')" class="text-[10px] bg-gray-100 hover:bg-momma-sage hover:text-white rounded px-2 py-1 transition">Blog</button>
+                            <button onclick="quickText('Free Download', 'Grab your checklist today')" class="text-[10px] bg-gray-100 hover:bg-momma-sage hover:text-white rounded px-2 py-1 transition">Freebie</button>
+                            <button onclick="quickText('Save This Post', 'For when you need it most')" class="text-[10px] bg-gray-100 hover:bg-momma-sage hover:text-white rounded px-2 py-1 transition">Save CTA</button>
+                            <button onclick="quickText('Swipe →', 'See the full checklist')" class="text-[10px] bg-gray-100 hover:bg-momma-sage hover:text-white rounded px-2 py-1 transition">Swipe</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-magic-edit" class="space-y-4 hidden">
+                    <div class="bg-purple-50 text-purple-800 text-[10px] p-3 rounded-lg flex gap-2">
+                        <i class="fa-solid fa-sparkles mt-0.5"></i>
+                        <p><strong>AI Edit:</strong> Beri instruksi perubahan pada image. e.g., "Remove the coffee cup", "Make her wear a blue dress".</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Edit Instruction</label>
+                        <textarea id="edit-prompt" rows="3" class="w-full rounded-lg border-gray-200 border focus:border-purple-400 focus:ring-1 focus:ring-purple-400 p-2 text-sm bg-white" placeholder="What would you like to change?"></textarea>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5">
+                        <button onclick="quickEdit('Remove all text and watermarks')" class="text-[10px] bg-purple-50 text-purple-700 border border-purple-100 px-2 py-1 rounded hover:bg-purple-100 transition">Clean text</button>
+                        <button onclick="quickEdit('Make background softly blurred')" class="text-[10px] bg-purple-50 text-purple-700 border border-purple-100 px-2 py-1 rounded hover:bg-purple-100 transition">Blur bg</button>
+                        <button onclick="quickEdit('Warm golden hour lighting')" class="text-[10px] bg-purple-50 text-purple-700 border border-purple-100 px-2 py-1 rounded hover:bg-purple-100 transition">Golden hour</button>
+                        <button onclick="quickEdit('Remove any distracting objects')" class="text-[10px] bg-purple-50 text-purple-700 border border-purple-100 px-2 py-1 rounded hover:bg-purple-100 transition">Declutter</button>
+                    </div>
+                    <button id="apply-edit-btn" class="w-full bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-semibold py-2.5 rounded-lg shadow-md transition-all flex justify-center items-center gap-2 text-sm transform active:scale-95">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Apply AI Edit
+                    </button>
+                    <div id="edit-loading" class="hidden flex-col items-center justify-center py-4 text-purple-600">
+                        <i class="fa-solid fa-circle-notch fa-spin text-2xl mb-2"></i>
+                        <span class="text-xs font-medium">Re-rendering image...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= CONTENT STUDIO ================= -->
+    <div id="content-studio" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background: rgba(15,23,42,0.85); backdrop-filter: blur(8px);">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-slide-up">
+            <div class="flex justify-between items-center p-5 border-b border-gray-100">
+                <div>
+                    <h2 class="font-serif text-xl font-bold text-momma-dark"><i class="fa-solid fa-feather-pointed text-momma-sage mr-2"></i>Content Studio</h2>
+                    <p class="text-[11px] text-gray-500 mt-0.5">Captions, hashtags, alt-text, dan CTA.</p>
+                </div>
+                <button onclick="closeContentStudio()" class="text-gray-400 hover:text-gray-700 w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100 transition"><i class="fa-solid fa-times"></i></button>
+            </div>
+
+            <div class="p-5 overflow-y-auto flex-grow space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1.5">Content Source</label>
+                    <textarea id="cs-source" rows="3" class="w-full rounded-lg border border-gray-200 p-2.5 text-xs bg-gray-50 focus:bg-white focus:ring-1 focus:ring-momma-sage outline-none" placeholder="Describe the image or paste your prompt..."></textarea>
+                    <button onclick="syncPromptToStudio()" class="text-[10px] text-momma-sage mt-1 hover:underline"><i class="fa-solid fa-arrow-down mr-1"></i>Pull from prompt</button>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="generateContent('caption')" class="cs-btn text-xs font-semibold bg-gray-50 border border-gray-200 rounded-lg py-2.5 hover:border-momma-sage hover:text-momma-sage transition">
+                        <i class="fa-solid fa-comment block mb-1"></i> Caption
+                    </button>
+                    <button onclick="generateContent('hashtags')" class="cs-btn text-xs font-semibold bg-gray-50 border border-gray-200 rounded-lg py-2.5 hover:border-momma-sage hover:text-momma-sage transition">
+                        <i class="fa-solid fa-hashtag block mb-1"></i> Tags
+                    </button>
+                    <button onclick="generateContent('alt')" class="cs-btn text-xs font-semibold bg-gray-50 border border-gray-200 rounded-lg py-2.5 hover:border-momma-sage hover:text-momma-sage transition">
+                        <i class="fa-solid fa-universal-access block mb-1"></i> Alt
+                    </button>
+                    <button onclick="generateContent('hooks')" class="cs-btn text-xs font-semibold bg-gray-50 border border-gray-200 rounded-lg py-2.5 hover:border-momma-sage hover:text-momma-sage transition">
+                        <i class="fa-solid fa-bolt block mb-1"></i> Hooks
+                    </button>
+                    <button onclick="generateContent('cta')" class="cs-btn text-xs font-semibold bg-gray-50 border border-gray-200 rounded-lg py-2.5 hover:border-momma-sage hover:text-momma-sage transition">
+                        <i class="fa-solid fa-bullhorn block mb-1"></i> CTAs
+                    </button>
+                    <button onclick="generateContent('ideas')" class="cs-btn text-xs font-semibold bg-gray-50 border border-gray-200 rounded-lg py-2.5 hover:border-momma-sage hover:text-momma-sage transition">
+                        <i class="fa-solid fa-lightbulb block mb-1"></i> Ideas
+                    </button>
+                </div>
+
+                <div id="cs-output-wrap" class="hidden">
+                    <div class="flex justify-between items-center mb-2">
+                        <label id="cs-output-label" class="text-xs font-bold text-gray-700">Output</label>
+                        <button onclick="copyCsOutput()" class="text-[10px] bg-gray-100 hover:bg-momma-sage hover:text-white text-gray-600 px-2.5 py-1 rounded font-medium transition"><i class="fa-solid fa-copy mr-1"></i>Copy</button>
+                    </div>
+                    <div id="cs-output" class="bg-gray-50 rounded-lg p-4 text-xs whitespace-pre-wrap leading-relaxed text-gray-700 min-h-[100px] max-h-[280px] overflow-y-auto"></div>
+                </div>
+
+                <div id="cs-loading" class="hidden flex-col items-center py-6 text-momma-sage">
+                    <i class="fa-solid fa-circle-notch fa-spin text-2xl mb-2"></i>
+                    <p class="text-xs">Writing...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PROMPT LIBRARY ================= -->
+    <div id="prompt-library" class="fixed inset-0 z-50 hidden items-center justify-center p-4" style="background: rgba(15,23,42,0.85); backdrop-filter: blur(8px);">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden animate-slide-up">
+            <div class="flex justify-between items-center p-5 border-b border-gray-100">
+                <div>
+                    <h2 class="font-serif text-xl font-bold text-momma-dark"><i class="fa-solid fa-bookmark text-momma-sage mr-2"></i>Prompt Library</h2>
+                    <p class="text-[11px] text-gray-500 mt-0.5">Curated prompts untuk mulai produksi.</p>
+                </div>
+                <button onclick="closePromptLibrary()" class="text-gray-400 hover:text-gray-700 w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100 transition"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="p-5 overflow-y-auto flex-grow">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="p-4 border border-gray-100 rounded-xl hover:border-momma-sage hover:shadow-md transition cursor-pointer" onclick="selectLibraryPrompt('pregnancy-journey')">
+                        <div class="flex items-center gap-2 mb-1"><i class="fa-solid fa-heart text-pink-500"></i><span class="text-[10px] uppercase font-bold text-gray-400 tracking-wide">Pregnancy</span></div>
+                        <h4 class="text-sm font-bold text-gray-800 mb-1">Pregnancy Journey Series</h4>
+                        <p class="text-[11px] text-gray-500 leading-snug">Weekly bump photos in same lighting.</p>
+                    </div>
+                    <div class="p-4 border border-gray-100 rounded-xl hover:border-momma-sage hover:shadow-md transition cursor-pointer" onclick="selectLibraryPrompt('nursery-tour')">
+                        <div class="flex items-center gap-2 mb-1"><i class="fa-solid fa-couch text-momma-sage"></i><span class="text-[10px] uppercase font-bold text-gray-400 tracking-wide">Interior</span></div>
+                        <h4 class="text-sm font-bold text-gray-800 mb-1">Nursery Tour</h4>
+                        <p class="text-[11px] text-gray-500 leading-snug">Minimal, warm, cozy corner shots.</p>
+                    </div>
+                    <div class="p-4 border border-gray-100 rounded-xl hover:border-momma-sage hover:shadow-md transition cursor-pointer" onclick="selectLibraryPrompt('flatlay-essentials')">
+                        <div class="flex items-center gap-2 mb-1"><i class="fa-solid fa-box-open text-amber-600"></i><span class="text-[10px] uppercase font-bold text-gray-400 tracking-wide">Product</span></div>
+                        <h4 class="text-sm font-bold text-gray-800 mb-1">Baby Essentials Flatlay</h4>
+                        <p class="text-[11px] text-gray-500 leading-snug">Top-down linen flatlay.</p>
+                    </div>
+                    <div class="p-4 border border-gray-100 rounded-xl hover:border-momma-sage hover:shadow-md transition cursor-pointer" onclick="selectLibraryPrompt('hospital-bag')">
+                        <div class="flex items-center gap-2 mb-1"><i class="fa-solid fa-suitcase-medical text-red-500"></i><span class="text-[10px] uppercase font-bold text-gray-400 tracking-wide">Checklist</span></div>
+                        <h4 class="text-sm font-bold text-gray-800 mb-1">Hospital Bag Checklist</h4>
+                        <p class="text-[11px] text-gray-500 leading-snug">Styled flatlay with typography space.</p>
+                    </div>
+                    <div class="p-4 border border-gray-100 rounded-xl hover:border-momma-sage hover:shadow-md transition cursor-pointer" onclick="selectLibraryPrompt('breastfeeding-quiet')">
+                        <div class="flex items-center gap-2 mb-1"><i class="fa-solid fa-hands-holding-child text-indigo-500"></i><span class="text-[10px] uppercase font-bold text-gray-400 tracking-wide">Intimate</span></div>
+                        <h4 class="text-sm font-bold text-gray-800 mb-1">Quiet Nursing Moments</h4>
+                        <p class="text-[11px] text-gray-500 leading-snug">Warm, private, tender imagery.</p>
+                    </div>
+                    <div class="p-4 border border-gray-100 rounded-xl hover:border-momma-sage hover:shadow-md transition cursor-pointer" onclick="selectLibraryPrompt('toddler-meals')">
+                        <div class="flex items-center gap-2 mb-1"><i class="fa-solid fa-utensils text-green-600"></i><span class="text-[10px] uppercase font-bold text-gray-400 tracking-wide">Lifestyle</span></div>
+                        <h4 class="text-sm font-bold text-gray-800 mb-1">Toddler Meal Time</h4>
+                        <p class="text-[11px] text-gray-500 leading-snug">Wholesome, bright highchair scenes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= COMMAND PALETTE ================= -->
+    <div id="cmd-palette" class="fixed inset-0 z-[100] hidden items-start justify-center pt-24 p-4" style="background: rgba(15,23,42,0.7);">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden animate-slide-up">
+            <div class="flex items-center gap-3 px-4 py-3 border-b border-gray-100">
+                <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                <input type="text" id="cmd-input" placeholder="Search actions or type a prompt..." class="flex-grow outline-none text-sm bg-transparent">
+                <kbd>ESC</kbd>
+            </div>
+            <div id="cmd-results" class="max-h-80 overflow-y-auto p-2"></div>
+        </div>
+    </div>
+
+    <!-- ================= TOAST ================= -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full text-sm font-medium shadow-xl z-[110] flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-green-400"></i>
+        <span id="toast-msg">Success</span>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION & API KEY MANAGEMENT
+        // ============================================
+        let apiKey = localStorage.getItem('wm-api-key') || '';
+
+        function getImageApiUrl() {
+            return `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image:generateContent?key=${apiKey}`;
+        }
+        function getTextApiUrl() {
+            return `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+        }
+
+        function hasApiKey() { return !!apiKey && apiKey.length > 10; }
+
+        function updateApiBanner() {
+            const banner = document.getElementById('api-banner');
+            const btn = document.getElementById('api-key-btn');
+            if (hasApiKey()) {
+                banner.classList.add('hidden');
+                btn.querySelector('i').className = 'fa-solid fa-key text-momma-sage';
+                btn.title = 'API Key set ✓';
+            } else {
+                banner.classList.remove('hidden');
+                btn.querySelector('i').className = 'fa-solid fa-key text-amber-500 animate-pulse';
+                btn.title = 'Set API Key';
+            }
+        }
+
+        window.openApiKeyModal = function() {
+            const modal = document.getElementById('api-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.getElementById('api-key-input').value = apiKey;
+            const status = document.getElementById('api-status');
+            status.textContent = hasApiKey() ? '✓ API Key sudah tersimpan' : 'Belum ada API Key';
+        };
+        window.closeApiKeyModal = function() {
+            const modal = document.getElementById('api-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+        window.toggleApiVisibility = function() {
+            const input = document.getElementById('api-key-input');
+            const icon = document.getElementById('api-eye-icon');
+            if (input.type === 'password') { input.type = 'text'; icon.className = 'fa-solid fa-eye-slash'; }
+            else { input.type = 'password'; icon.className = 'fa-solid fa-eye'; }
+        };
+        window.saveApiKey = function() {
+            const value = document.getElementById('api-key-input').value.trim();
+            if (!value) { showToast('API Key kosong.', 'fa-triangle-exclamation', 'text-yellow-400'); return; }
+            if (!value.startsWith('AIza')) { showToast('Format key tidak valid (harus mulai AIza...).', 'fa-triangle-exclamation', 'text-yellow-400'); return; }
+            apiKey = value;
+            localStorage.setItem('wm-api-key', apiKey);
+            updateApiBanner();
+            closeApiKeyModal();
+            showToast('API Key tersimpan!', 'fa-check', 'text-green-400');
+        };
+        window.clearApiKey = function() {
+            if (!confirm('Hapus API Key?')) return;
+            apiKey = '';
+            localStorage.removeItem('wm-api-key');
+            document.getElementById('api-key-input').value = '';
+            updateApiBanner();
+            showToast('API Key dihapus.', 'fa-trash', 'text-red-400');
+        };
+
+        // ============================================
+        // DOM SHORTCUTS
+        // ============================================
+        const $ = id => document.getElementById(id);
+        const form = $('generator-form');
+        const promptInput = $('prompt');
+        const magicBtn = $('magic-btn');
+        const subjectSelect = $('subject');
+        const settingSelect = $('setting');
+        const paletteSelect = $('palette');
+        const styleSelect = $('style');
+        const negativePromptInput = $('negative-prompt');
+        const generateBtn = $('generate-btn');
+        const dropZone = $('drop-zone');
+        const imageInput = $('image-upload');
+        const uploadPrompt = $('upload-prompt');
+        const uploadPreview = $('upload-preview');
+        const previewImg = $('preview-img');
+        const removeImgBtn = $('remove-img-btn');
+        const emptyState = $('empty-state');
+        const loadingState = $('loading-state');
+        const errorState = $('error-state');
+        const errorMsg = $('error-msg');
+        const resultsContainer = $('results-container');
+        const historyGrid = $('history-grid');
+        const toast = $('toast');
+        const editorModal = $('editor-modal');
+        const editorSidebar = $('editor-sidebar');
+        const editorImg = $('editor-img');
+        const editorClose = $('editor-close');
+        const editorDownload = $('editor-download');
+        const typoBadge = $('typo-badge');
+        const typoTitle = $('typo-title');
+        const typoSub = $('typo-sub');
+        const typoFont = $('typo-font');
+        const typoPos = $('typo-pos');
+        const typoColor = $('typo-color');
+        const typoColorHex = $('typo-color-hex');
+        const typoScrim = $('typo-scrim');
+        const overlayPreview = $('overlay-preview');
+        const previewBadge = $('preview-badge');
+        const previewTitle = $('preview-title');
+        const previewSubtitle = $('preview-subtitle');
+        const editPrompt = $('edit-prompt');
+        const applyEditBtn = $('apply-edit-btn');
+        const editLoading = $('edit-loading');
+        const lockSeedToggle = $('lock-seed');
+        const seedInput = $('seed-input');
+
+        // ============================================
+        // STATE
+        // ============================================
+        let referenceImageBase64 = null;
+        let referenceImageMimeType = null;
+        let sessionHistory = [];
+        let currentEditorData = null;
+        let generatedResultsMap = new Map();
+        let selectedImages = new Set();
+        let favorites = new Set();
+        let historyFilter = 'all';
+        let brandKit = {
+            name: 'WithMomma',
+            primary: '#8FA396',
+            secondary: '#B87A6B',
+            text: '#2D3748',
+            font: 'Playfair Display|Inter',
+            logo: null
+        };
+        let currentFilters = { brightness:100, contrast:100, saturate:100, warmth:0, vignette:0, blur:0 };
+        let currentWatermark = false;
+
+        // ============================================
+        // UTILITIES
+        // ============================================
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        function showToast(message, icon='fa-circle-check', color='text-green-400') {
+            const toastIcon = toast.querySelector('i');
+            toastIcon.className = `fa-solid ${icon} ${color}`;
+            $('toast-msg').textContent = message;
+            toast.classList.add('show');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+        }
+
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+        }
+
+        // ============================================
+        // DARK MODE
+        // ============================================
+        window.toggleDarkMode = function() {
+            const html = document.documentElement;
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('wm-dark', isDark ? '1' : '0');
+            const icon = $('dark-toggle').querySelector('i');
+            icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        };
+
+        if (localStorage.getItem('wm-dark') === '1') {
+            document.documentElement.classList.add('dark');
+            $('dark-toggle').querySelector('i').className = 'fa-solid fa-sun';
+        }
+
+        // ============================================
+        // SIDEBAR TABS
+        // ============================================
+        window.switchSidebarTab = function(name, e) {
+            document.querySelectorAll('.sidebar-tab').forEach(t => {
+                t.classList.remove('active', 'text-momma-sage', 'border-b-2', 'border-momma-sage');
+                t.classList.add('text-gray-500');
+            });
+            e.currentTarget.classList.add('active', 'text-momma-sage', 'border-b-2', 'border-momma-sage');
+            e.currentTarget.classList.remove('text-gray-500');
+            ['generate','library','brand'].forEach(t => {
+                $('sidebar-tab-' + t).classList.toggle('hidden', t !== name);
+            });
+        };
+
+        // ============================================
+        // SEED
+        // ============================================
+        lockSeedToggle.addEventListener('change', e => {
+            if (e.target.checked) {
+                seedInput.disabled = false;
+                if (!seedInput.value) seedInput.value = Math.floor(Math.random() * 1000000);
+                seedInput.classList.remove('bg-gray-50', 'text-gray-400');
+                seedInput.classList.add('bg-white', 'text-gray-900', 'font-bold');
+            } else {
+                seedInput.disabled = true;
+                seedInput.classList.add('bg-gray-50', 'text-gray-400');
+                seedInput.classList.remove('bg-white', 'text-gray-900', 'font-bold');
+            }
+        });
+
+        // ============================================
+        // DRAG & DROP
+        // ============================================
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); }));
+        ['dragenter', 'dragover'].forEach(ev => dropZone.addEventListener(ev, () => dropZone.classList.add('dragover')));
+        ['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, () => dropZone.classList.remove('dragover')));
+        dropZone.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
+        imageInput.addEventListener('change', function() { handleFiles(this.files); });
+
+        function handleFiles(files) {
+            if (!files.length) return;
+            const file = files[0];
+            if (!file.type.startsWith('image/')) { showToast('Upload file image.', 'fa-triangle-exclamation', 'text-yellow-400'); return; }
+            referenceImageMimeType = file.type;
+            const reader = new FileReader();
+            reader.onload = e => {
+                referenceImageBase64 = e.target.result.split(',')[1];
+                previewImg.src = e.target.result;
+                uploadPrompt.classList.add('hidden');
+                uploadPreview.classList.remove('hidden');
+                uploadPreview.classList.add('flex');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        removeImgBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            imageInput.value = "";
+            referenceImageBase64 = null;
+            referenceImageMimeType = null;
+            uploadPreview.classList.add('hidden');
+            uploadPreview.classList.remove('flex');
+            uploadPrompt.classList.remove('hidden');
+        });
+
+        promptInput.addEventListener('input', () => {
+            $('prompt-counter').textContent = promptInput.value.length + ' chars';
+        });
+
+        window.addNegative = function(text) {
+            const cur = negativePromptInput.value.trim();
+            negativePromptInput.value = cur ? cur + ', ' + text : text;
+            showToast('Negative preset added.');
+        };
+
+        // ============================================
+        // MAGIC ENHANCE
+        // ============================================
+        magicBtn.addEventListener('click', async () => {
+            if (!hasApiKey()) { openApiKeyModal(); return; }
+            const currentText = promptInput.value.trim();
+            if (!currentText) { showToast("Type a short idea first.", 'fa-lightbulb', 'text-yellow-400'); promptInput.focus(); return; }
+            magicBtn.disabled = true;
+            magicBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ...';
+            const systemPrompt = `You are a master prompt engineer for high-end, premium brand photography. Take the user's short idea and expand it into a highly detailed, descriptive image generation prompt (max 3 sentences). Focus on describing physical details, expressions, environment, and textures naturally. Do not mention UI or parameters.`;
+            const payload = {
+                contents: [{ parts: [{ text: `Expand this idea: ${currentText}` }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+            try {
+                const response = await fetch(getTextApiUrl(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const result = await response.json();
+                const enhancedText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (enhancedText) {
+                    promptInput.value = enhancedText.trim();
+                    promptInput.dispatchEvent(new Event('input'));
+                    showToast("Prompt enhanced!", 'fa-wand-magic-sparkles', 'text-purple-400');
+                } else { throw new Error('No response'); }
+            } catch (error) {
+                console.error(error);
+                showToast("Enhance failed. Try again.", 'fa-triangle-exclamation', 'text-red-400');
+            } finally {
+                magicBtn.disabled = false;
+                magicBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Enhance';
+            }
+        });
+
+        // ============================================
+        // PRESETS
+        // ============================================
+        window.applyPreset = function(type) {
+            if (type === 'maternity') {
+                promptInput.value = "A glowing pregnant woman gently holding her belly, looking down with a peaceful smile, standing near a large window.";
+                subjectSelect.value = "pregnant woman, elegant maternity portrait";
+                settingSelect.value = "soft morning natural light, bright, airy, cozy";
+                paletteSelect.value = "sage green, mint pastel green, natural earthy vibe";
+            } else if (type === 'toddler') {
+                promptInput.value = "A mother playing with her laughing toddler on a textured linen rug, surrounded by premium wooden toys.";
+                subjectSelect.value = "mother and toddler interacting playfully";
+                settingSelect.value = "golden hour, warm cinematic sun rays";
+                paletteSelect.value = "warm terracotta, orange rust, grounding earthy clay";
+            } else if (type === 'nursery') {
+                promptInput.value = "A beautifully styled modern nursery room, minimalist wooden crib, cozy rocking chair, trailing plants, perfectly organized space.";
+                subjectSelect.value = "aesthetic modern nursery room interior";
+                settingSelect.value = "soft morning natural light, bright, airy, cozy";
+                paletteSelect.value = "soft pink, light magenta, delicate pastel pink";
+                styleSelect.value = "minimalist Apple-style product photography, vast negative space";
+            } else if (type === 'reel') {
+                promptInput.value = "A cinematic close-up of a mother's hands cradling newborn baby feet, soft focus, warm ambient light, emotional intimacy.";
+                subjectSelect.value = "mother and newborn baby bonding, skin-to-skin";
+                settingSelect.value = "golden hour, warm cinematic sun rays";
+                paletteSelect.value = "warm beige, soft mustard, creamy yellow, comforting";
+            }
+            promptInput.dispatchEvent(new Event('input'));
+            showToast("Preset applied.", 'fa-bolt', 'text-yellow-400');
+        };
+
+        // ============================================
+        // PROMPT LIBRARY (SIDEBAR)
+        // ============================================
+        const promptTemplates = {
+            'maternity-glow': "A pregnant woman in a flowing linen dress standing near a floor-to-ceiling window, soft morning light wrapping around her silhouette, gentle smile, hand cradling her belly, cozy neutral interior.",
+            'nursery-detail': "A minimalist corner of a modern nursery, wooden crib with soft cream linens, a trailing pothos plant, woven basket, soft natural light through sheer curtains, warm neutral tones.",
+            'flatlay-baby': "Overhead flatlay of baby essentials on textured linen: muslin swaddle, wooden rattle, tiny knit booties, glass bottle, dried eucalyptus, arranged with generous negative space.",
+            'toddler-play': "A toddler sitting on a textured wool rug, laughing while stacking wooden blocks, mother's hand gently guiding, warm afternoon light, minimal Scandinavian living room.",
+            'feeding': "An intimate quiet moment of a mother nursing her newborn in a softly lit bedroom, warm blanket, gentle hand resting on baby's back, tender and peaceful.",
+            'bump-hands': "Close-up of a partner's hands cradling a pregnant belly, soft window light, delicate intimacy, warm skin tones, minimal background.",
+            'family-lifestyle': "A young family cuddled together in a bright bedroom on a weekend morning, baby between parents, warm white linens, soft sunlight, casual and joyful.",
+            'hospital-bag': "Beautifully arranged hospital bag essentials flatlay on a clean white surface: folded robe, slippers, tiny onesie, toiletries, notebook, with soft natural light.",
+            'postpartum': "A new mother in a soft robe holding a warm cup of tea, sitting in a cozy armchair near a window, plants, calm and restorative moment, warm neutral palette.",
+            'ultrasound': "A couple holding an ultrasound photo together on a cozy couch, warm emotional expressions, soft natural light, intimate home setting."
+        };
+
+        window.loadPromptTemplate = function(key) {
+            promptInput.value = promptTemplates[key];
+            promptInput.dispatchEvent(new Event('input'));
+            showToast('Template loaded.', 'fa-check', 'text-green-400');
+            window.scrollTo({top:0, behavior:'smooth'});
+        };
+
+        // ============================================
+        // PROMPT LIBRARY MODAL
+        // ============================================
+        const libraryPrompts = {
+            'pregnancy-journey': "A pregnant woman in the same pose near a large window, wearing a simple neutral dress, warm morning light. Week of pregnancy update portrait for a content series.",
+            'nursery-tour': "A styled modern nursery room featuring a wooden crib, comfortable reading chair, curated shelves with plants and books, soft neutral palette, warm afternoon light filtering through sheer curtains.",
+            'flatlay-essentials': "A styled flatlay of newborn essentials on cream linen: swaddle, wooden toy, knitted booties, glass bottle, dried flowers, curated with generous negative space for text overlay.",
+            'hospital-bag': "An organized hospital bag checklist flatlay on a clean neutral surface with a robe, slippers, newborn onesie, toiletries, and a notebook, soft natural light, elegant composition.",
+            'breastfeeding-quiet': "An intimate, tender portrait of a mother nursing her newborn in a softly lit bedroom, warm blanket, gentle hands, calm expression, cinematic warmth.",
+            'toddler-meals': "A cheerful toddler in a modern highchair enjoying a healthy colorful meal, fresh fruit and vegetables on the tray, bright airy kitchen, warm natural light."
+        };
+
+        window.openPromptLibrary = () => {
+            $('prompt-library').classList.remove('hidden');
+            $('prompt-library').classList.add('flex');
+        };
+        window.closePromptLibrary = () => {
+            $('prompt-library').classList.add('hidden');
+            $('prompt-library').classList.remove('flex');
+        };
+        window.selectLibraryPrompt = (key) => {
+            promptInput.value = libraryPrompts[key];
+            promptInput.dispatchEvent(new Event('input'));
+            closePromptLibrary();
+            showToast('Prompt loaded.', 'fa-check', 'text-green-400');
+        };
+
+        // ============================================
+        // BRAND KIT
+        // ============================================
+        function loadBrandKit() {
+            try {
+                const stored = localStorage.getItem('wm-brand');
+                if (stored) brandKit = { ...brandKit, ...JSON.parse(stored) };
+            } catch(e) {}
+            $('brand-name').value = brandKit.name;
+            $('brand-primary').value = brandKit.primary;
+            $('brand-secondary').value = brandKit.secondary;
+            $('brand-text').value = brandKit.text;
+            $('brand-font').value = brandKit.font;
+            if (brandKit.logo) {
+                $('logo-img').src = brandKit.logo;
+                $('logo-prompt').classList.add('hidden');
+                $('logo-preview').classList.remove('hidden');
+            }
+        }
+        loadBrandKit();
+
+        window.saveBrandKit = () => {
+            brandKit.name = $('brand-name').value;
+            brandKit.primary = $('brand-primary').value;
+            brandKit.secondary = $('brand-secondary').value;
+            brandKit.text = $('brand-text').value;
+            brandKit.font = $('brand-font').value;
+            try { localStorage.setItem('wm-brand', JSON.stringify(brandKit)); } catch(e) {}
+            showToast('Brand kit saved.', 'fa-check', 'text-green-400');
+        };
+
+        $('logo-upload').addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                brandKit.logo = e.target.result;
+                $('logo-img').src = e.target.result;
+                $('logo-prompt').classList.add('hidden');
+                $('logo-preview').classList.remove('hidden');
+                try { localStorage.setItem('wm-brand', JSON.stringify(brandKit)); } catch(e) {}
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // ============================================
+        // GENERATION
+        // ============================================
+        function buildGridCSS(ratio) {
+            let gridClass = "grid gap-3 sm:gap-4 w-full h-full animate-fade-in ";
+            if (ratio === "9:16") gridClass += "grid-cols-2 xl:grid-cols-4";
+            else if (ratio === "16:9") gridClass += "grid-cols-1 xl:grid-cols-2";
+            else gridClass += "grid-cols-2";
+            return gridClass;
+        }
+
+        function getAspectRatioPadding(ratio) {
+            if (ratio === '9:16') return 'pb-[177%]';
+            if (ratio === '16:9') return 'pb-[56.25%]';
+            return 'pb-[100%]';
+        }
+
+        async function handleGenerate(e) {
+            e.preventDefault();
+            if (!hasApiKey()) { openApiKeyModal(); showToast('Set API Key terlebih dahulu.', 'fa-key', 'text-amber-400'); return; }
+
+            const userDesc = promptInput.value.trim();
+            if (!userDesc) { showToast("Please enter a concept description.", 'fa-lightbulb', 'text-yellow-400'); return; }
+
+            const ratio = document.querySelector('input[name="ratio"]:checked').value;
+            const varCount = parseInt(document.querySelector('input[name="varcount"]:checked').value);
+            const subject = subjectSelect.value;
+            const setting = settingSelect.value;
+            const palette = paletteSelect.value;
+            const style = styleSelect.value;
+            const negative = negativePromptInput.value.trim();
+
+            let currentSeed = null;
+            if (lockSeedToggle.checked && seedInput.value) currentSeed = parseInt(seedInput.value);
+
+            emptyState.classList.add('hidden');
+            errorState.classList.add('hidden');
+            resultsContainer.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+            loadingState.classList.add('flex');
+            generateBtn.disabled = true;
+
+            const progressWrap = $('progress-wrap');
+            progressWrap.classList.remove('hidden');
+            $('progress-fill').style.width = '0%';
+            $('progress-pct').textContent = '0%';
+            $('progress-label').textContent = `Preparing ${varCount} variations...`;
+
+            let masterPrompt = `Create a premium, professional image for a high-end marketing campaign. `;
+            masterPrompt += `Subject: ${subject}. Concept description: ${userDesc}. `;
+            masterPrompt += `Lighting & Environment: ${setting}. Color Palette: ${palette}. Art Direction: ${style}. `;
+            if (referenceImageBase64) {
+                masterPrompt += `\n\nCRITICAL REFERENCE INSTRUCTION: Analyze the uploaded reference image. Use it heavily for layout, compositional structure, and overall visual balance. However, transform the content to perfectly match the text description and brand palette above. `;
+            }
+            masterPrompt += `\n\nWITHMOMMA BRAND RULES: The image MUST feel authentic, warm, and reassuring. NO plastic/robotic AI artifacts. Real skin textures, genuine natural expressions. `;
+            masterPrompt += `ABSOLUTELY NO watermarks, NO brand names, NO logos, NO text anywhere in the image. Keep it perfectly clean for typography overlay later. `;
+            masterPrompt += `\n\nTECHNICAL QUALITY: Render in ultra-high definition, 8K resolution equivalent, sharp focus, macro details. Ensure hyper-realistic lighting and cinematic commercial photography quality. `;
+            if (negative) masterPrompt += `\nDo NOT include: ${negative}.`;
+
+            resultsContainer.innerHTML = '';
+            resultsContainer.className = buildGridCSS(ratio);
+
+            const variationStyles = [
+                " Focus on emotional depth and natural connection.",
+                " Focus on flawless lighting, textures, and premium composition.",
+                " Offer a slightly different angle, very airy and breathable.",
+                " Focus on high-end editorial polish and macro details.",
+                " Emphasize intimate, personal storytelling moment.",
+                " Optimize for typography overlay with balanced negative space.",
+                " Add a touch of aspirational luxury lifestyle feel.",
+                " Capture candid unposed authenticity."
+            ];
+
+            try {
+                const results = [];
+                for (let i = 0; i < varCount; i++) {
+                    const finalPrompt = masterPrompt + variationStyles[i % variationStyles.length];
+                    generateBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${i+1}/${varCount}...`;
+                    $('progress-label').textContent = `Rendering variation ${i+1} of ${varCount}...`;
+                    const pct = Math.round((i / varCount) * 100);
+                    $('progress-fill').style.width = pct + '%';
+                    $('progress-pct').textContent = pct + '%';
+
+                    const iterSeed = currentSeed !== null ? currentSeed : Math.floor(Math.random() * 1000000);
+                    const resultData = await fetchSingleImage([{ role: 'user', parts: [{ text: finalPrompt }] }], ratio, i, iterSeed);
+                    if (resultData && resultData.url) {
+                        results.push(resultData.url);
+                        generatedResultsMap.set(resultData.url, resultData);
+                        addToHistory(resultData.url);
+                    }
+                }
+
+                $('progress-fill').style.width = '100%';
+                $('progress-pct').textContent = '100%';
+
+                if (results.length === 0) throw new Error("Failed to generate assets.");
+                await sleep(400);
+                renderResults(results, ratio);
+                progressWrap.classList.add('hidden');
+                showToast(`${results.length} variations ready!`, 'fa-check', 'text-green-400');
+            } catch (error) {
+                console.error(error);
+                progressWrap.classList.add('hidden');
+                loadingState.classList.add('hidden');
+                loadingState.classList.remove('flex');
+                errorState.classList.remove('hidden');
+                errorState.classList.add('flex');
+                errorMsg.textContent = error.message;
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = '<i class="fa-solid fa-layer-group"></i> Generate Variations';
+            }
+        }
+
+        async function fetchSingleImage(contentsHistory, aspectRatio, index, seedVal) {
+            if (referenceImageBase64 && referenceImageMimeType && contentsHistory.length === 1) {
+                contentsHistory[0].parts.push({ inlineData: { mimeType: referenceImageMimeType, data: referenceImageBase64 } });
+            }
+            const payload = {
+                contents: contentsHistory,
+                generationConfig: { responseModalities: ['IMAGE'], imageConfig: { aspectRatio: aspectRatio } }
+            };
+            if (seedVal) payload.generationConfig.seed = seedVal;
+
+            let retries = 2;
+            while (retries > 0) {
+                try {
+                    if (index > 0) await sleep(1000);
+                    const response = await fetch(getImageApiUrl(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    if (!response.ok) {
+                        if (response.status === 429) { retries--; await sleep(3000); continue; }
+                        throw new Error(`API Error: ${response.status}`);
+                    }
+                    const result = await response.json();
+                    const modelPart = result?.candidates?.[0]?.content;
+                    const imgPart = modelPart?.parts?.find(p => p.inlineData);
+                    if (imgPart && modelPart) {
+                        const url = `data:${imgPart.inlineData.mimeType || 'image/jpeg'};base64,${imgPart.inlineData.data}`;
+                        return { url, history: [...contentsHistory, modelPart] };
+                    }
+                    return null;
+                } catch (error) {
+                    if (retries === 1) return null;
+                    retries--;
+                }
+            }
+            return null;
+        }
+
+        function renderResults(images, ratio) {
+            loadingState.classList.add('hidden');
+            loadingState.classList.remove('flex');
+            resultsContainer.classList.remove('hidden');
+            resultsContainer.innerHTML = '';
+
+            const paddingClass = getAspectRatioPadding(ratio);
+
+            images.forEach(imgSrc => {
+                const card = document.createElement('div');
+                card.className = "img-card shadow-sm w-full";
+                card.dataset.url = imgSrc;
+                card.innerHTML = `
+                    <div class="relative w-full h-0 ${paddingClass}">
+                        <img src="${imgSrc}" class="absolute inset-0 w-full h-full object-cover rounded-md" loading="lazy">
+                        <div class="img-overlay rounded-md flex-wrap">
+                            <div class="card-action" title="Open editor" onclick="event.stopPropagation(); openEditor(this.closest('.img-card').dataset.url)"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                            <div class="card-action" title="Favorite" onclick="event.stopPropagation(); toggleFavorite(this.closest('.img-card').dataset.url, this)"><i class="fa-solid fa-star"></i></div>
+                            <div class="card-action" title="Download" onclick="event.stopPropagation(); downloadSingle(this.closest('.img-card').dataset.url)"><i class="fa-solid fa-download"></i></div>
+                            <div class="card-action" title="Select" onclick="event.stopPropagation(); toggleSelect(this.closest('.img-card').dataset.url, this)"><i class="fa-solid fa-check"></i></div>
+                        </div>
+                    </div>
+                `;
+                card.onclick = () => openEditor(imgSrc);
+                resultsContainer.appendChild(card);
+            });
+        }
+
+        // ============================================
+        // HISTORY
+        // ============================================
+        function addToHistory(imgSrc) {
+            sessionHistory.unshift(imgSrc);
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const items = historyFilter === 'fav'
+                ? sessionHistory.filter(u => favorites.has(u))
+                : sessionHistory;
+
+            historyGrid.innerHTML = '';
+            $('history-count').textContent = sessionHistory.length + ' item' + (sessionHistory.length !== 1 ? 's' : '');
+
+            if (items.length === 0) {
+                historyGrid.innerHTML = `<p class="col-span-full text-center text-xs text-gray-400 py-6 italic">${historyFilter === 'fav' ? 'No favorites yet.' : 'No history yet.'}</p>`;
+                return;
+            }
+
+            items.forEach(imgSrc => {
+                const thumb = document.createElement('div');
+                thumb.className = "aspect-square rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-momma-sage transition shadow-sm bg-gray-100 relative group";
+                thumb.innerHTML = `
+                    <img src="${imgSrc}" class="w-full h-full object-cover">
+                    <div class="absolute top-1 right-1">
+                        <button onclick="event.stopPropagation(); toggleFavorite(this.parentElement.parentElement.dataset.url, this)" data-url="${imgSrc}" class="bg-white/90 hover:bg-white w-6 h-6 rounded-full flex items-center justify-center text-[10px] ${favorites.has(imgSrc) ? 'text-yellow-500' : 'text-gray-400'}">
+                            <i class="fa-solid fa-star"></i>
+                        </button>
+                    </div>
+                `;
+                thumb.dataset.url = imgSrc;
+                thumb.onclick = () => openEditor(imgSrc);
+                historyGrid.appendChild(thumb);
+            });
+        }
+
+        window.filterHistory = (mode, e) => {
+            historyFilter = mode;
+            document.querySelectorAll('.history-filter').forEach(b => {
+                b.classList.remove('active', 'bg-white', 'shadow-sm', 'text-momma-dark');
+                b.classList.add('text-gray-500');
+            });
+            e.currentTarget.classList.add('active', 'bg-white', 'shadow-sm', 'text-momma-dark');
+            e.currentTarget.classList.remove('text-gray-500');
+            renderHistory();
+        };
+
+        window.toggleFavorite = (imgSrc, el) => {
+            if (favorites.has(imgSrc)) {
+                favorites.delete(imgSrc);
+                el?.classList.remove('active');
+                const i = el?.querySelector('i');
+                if (i) { i.classList.remove('text-yellow-500'); i.classList.add('text-gray-400'); }
+                showToast('Removed from favorites.', 'fa-star', 'text-gray-400');
+            } else {
+                favorites.add(imgSrc);
+                el?.classList.add('active');
+                const i = el?.querySelector('i');
+                if (i) { i.classList.add('text-yellow-500'); i.classList.remove('text-gray-400'); }
+                showToast('Added to favorites.', 'fa-star', 'text-yellow-400');
+            }
+            renderHistory();
+        };
+
+        // ============================================
+        // SELECT & BATCH
+        // ============================================
+        window.toggleSelect = (imgSrc, el) => {
+            const card = el.closest('.img-card');
+            if (selectedImages.has(imgSrc)) {
+                selectedImages.delete(imgSrc);
+                card?.classList.remove('selected');
+                el.classList.remove('active');
+            } else {
+                selectedImages.add(imgSrc);
+                card?.classList.add('selected');
+                el.classList.add('active');
+            }
+            const actions = $('canvas-actions');
+            if (selectedImages.size > 0) {
+                actions.classList.remove('hidden');
+                actions.classList.add('flex');
+                $('selected-count').textContent = selectedImages.size;
+            } else {
+                actions.classList.add('hidden');
+                actions.classList.remove('flex');
+            }
+        };
+
+        window.clearSelection = () => {
+            selectedImages.clear();
+            document.querySelectorAll('.img-card.selected').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('.card-action.active').forEach(a => a.classList.remove('active'));
+            $('canvas-actions').classList.add('hidden');
+            $('canvas-actions').classList.remove('flex');
+        };
+
+        window.downloadSingle = async (imgSrc) => {
+            const data = generatedResultsMap.get(imgSrc);
+            currentEditorData = data || { url: imgSrc, history: [] };
+            await performDownload(false);
+        };
+
+        window.downloadSelected = async () => {
+            if (selectedImages.size === 0) return;
+            showToast(`Downloading ${selectedImages.size} images...`, 'fa-download', 'text-blue-400');
+            let i = 0;
+            for (const src of selectedImages) {
+                const data = generatedResultsMap.get(src) || { url: src, history: [] };
+                currentEditorData = data;
+                await performDownload(false);
+                i++;
+                await sleep(500);
+            }
+            showToast(`${i} images downloaded.`, 'fa-check', 'text-green-400');
+        };
+
+        // ============================================
+        // PRO EDITOR
+        // ============================================
+        window.switchTab = function(tabId, e) {
+            document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+            ['typography', 'filters', 'templates', 'magic-edit'].forEach(t => $('tab-' + t).classList.toggle('hidden', t !== tabId));
+            if (tabId === 'typography') updateTypographyPreview();
+            else overlayPreview.classList.add('hidden');
+        };
+
+        function getFontPair() {
+            const [heading, body] = typoFont.value.split('|');
+            return { heading, body };
+        }
+
+        function updateTypographyPreview() {
+            const hasContent = typoBadge.value || typoTitle.value || typoSub.value;
+            if (!hasContent) { overlayPreview.classList.add('hidden'); return; }
+            if (document.getElementById('tab-typography').classList.contains('hidden')) return;
+            overlayPreview.classList.remove('hidden');
+
+            const { heading, body } = getFontPair();
+            previewBadge.textContent = typoBadge.value;
+            previewBadge.style.opacity = typoBadge.value ? '1' : '0';
+            previewTitle.textContent = typoTitle.value;
+            previewTitle.style.fontFamily = `'${heading}', serif`;
+            previewTitle.style.color = typoColor.value;
+            previewSubtitle.textContent = typoSub.value;
+            previewSubtitle.style.fontFamily = `'${body}', sans-serif`;
+            previewSubtitle.style.color = typoColor.value;
+
+            if (typoScrim.checked) {
+                overlayPreview.style.background = 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 45%)';
+            } else {
+                overlayPreview.style.background = 'transparent';
+            }
+
+            const pos = typoPos.value;
+            overlayPreview.style.justifyContent = pos === 'top' ? 'flex-start' : pos === 'bottom' ? 'flex-end' : 'center';
+            overlayPreview.style.alignItems = pos === 'center' ? 'center' : 'flex-start';
+            overlayPreview.style.textAlign = pos === 'center' ? 'center' : 'left';
+            overlayPreview.style.paddingTop = pos === 'top' ? '12%' : '10%';
+            overlayPreview.style.paddingBottom = pos === 'bottom' ? '12%' : '10%';
+            previewBadge.style.alignSelf = pos === 'center' ? 'center' : 'flex-start';
+        }
+
+        [typoBadge, typoTitle, typoSub, typoPos, typoColor, typoFont, typoScrim].forEach(el => {
+            el.addEventListener('input', updateTypographyPreview);
+            el.addEventListener('change', updateTypographyPreview);
+        });
+
+        typoColor.addEventListener('input', () => typoColorHex.value = typoColor.value);
+
+        window.applyTypographyPreset = (type) => {
+            if (type === 'hero') {
+                typoPos.value = 'center';
+                typoScrim.checked = true;
+                if (!typoTitle.value) typoTitle.value = 'New Blog Post';
+                if (!typoSub.value) typoSub.value = 'Read the full guide →';
+            } else if (type === 'bottom') {
+                typoPos.value = 'bottom';
+                typoScrim.checked = true;
+                if (!typoTitle.value) typoTitle.value = 'Save This Post';
+                if (!typoSub.value) typoSub.value = 'For when you need it most';
+            } else if (type === 'badge') {
+                typoPos.value = 'top';
+                typoScrim.checked = false;
+                if (!typoBadge.value) typoBadge.value = 'NEW';
+                if (!typoTitle.value) typoTitle.value = 'Free Checklist';
+            }
+            updateTypographyPreview();
+        };
+
+        window.applyLayout = (type) => {
+            const layouts = {
+                pin: { title:'Hospital Bag Checklist', sub:'The essential guide for expecting mothers', badge:'FREE PRINTABLE', pos:'bottom', font:'Playfair Display|Inter', scrim:true },
+                carousel: { title:'Save This Post', sub:'Swipe for the full checklist →', badge:'', pos:'center', font:'Cormorant Garamond|DM Sans', scrim:false },
+                story: { title:'5 Nursery Must-Haves', sub:'Swipe up to shop', badge:'NEW POST', pos:'bottom', font:'Playfair Display|Montserrat', scrim:true },
+                quote: { title:'"You are doing better than you think."', sub:'', badge:'', pos:'center', font:'Cormorant Garamond|Inter', scrim:false },
+                checklist: { title:'Newborn Essentials', sub:'12 things you actually need', badge:'DOWNLOAD', pos:'top', font:'Libre Baskerville|Montserrat', scrim:false },
+                product: { title:'Bestselling Swaddle', sub:'Soft, breathable, adored by moms', badge:'SHOP NOW', pos:'top', font:'Montserrat|Inter', scrim:false }
+            };
+            const l = layouts[type];
+            if (!l) return;
+            typoTitle.value = l.title;
+            typoSub.value = l.sub;
+            typoBadge.value = l.badge;
+            typoPos.value = l.pos;
+            typoFont.value = l.font;
+            typoScrim.checked = l.scrim;
+            updateTypographyPreview();
+            showToast('Layout applied.', 'fa-table-cells', 'text-blue-400');
+        };
+
+        window.quickText = (title, sub) => {
+            typoTitle.value = title;
+            typoSub.value = sub;
+            updateTypographyPreview();
+        };
+
+        // Filters
+        ['bright','contrast','sat','warm','vig','blur'].forEach(k => {
+            const el = $('f-' + k);
+            el.addEventListener('input', () => {
+                currentFilters = {
+                    brightness: parseInt($('f-bright').value),
+                    contrast: parseInt($('f-contrast').value),
+                    saturate: parseInt($('f-sat').value),
+                    warmth: parseInt($('f-warm').value),
+                    vignette: parseInt($('f-vig').value),
+                    blur: parseInt($('f-blur').value)
+                };
+                $('f-bright-val').textContent = currentFilters.brightness + '%';
+                $('f-contrast-val').textContent = currentFilters.contrast + '%';
+                $('f-sat-val').textContent = currentFilters.saturate + '%';
+                $('f-warm-val').textContent = currentFilters.warmth;
+                $('f-vig-val').textContent = currentFilters.vignette;
+                $('f-blur-val').textContent = currentFilters.blur + 'px';
+                applyPreviewFilters();
+            });
+        });
+
+        $('watermark-toggle').addEventListener('change', e => { currentWatermark = e.target.checked; });
+
+        function applyPreviewFilters() {
+            const f = currentFilters;
+            editorImg.style.filter = `brightness(${f.brightness}%) contrast(${f.contrast}%) saturate(${f.saturate}%) blur(${f.blur}px)`;
+        }
+
+        window.applyFilterPreset = (name) => {
+            const presets = {
+                warm: { brightness:108, contrast:105, saturate:115, warmth:15, vignette:15, blur:0 },
+                airy: { brightness:115, contrast:92, saturate:105, warmth:5, vignette:0, blur:0 },
+                cinematic: { brightness:95, contrast:120, saturate:90, warmth:10, vignette:35, blur:0 },
+                moody: { brightness:88, contrast:115, saturate:85, warmth:-10, vignette:40, blur:0 },
+                reset: { brightness:100, contrast:100, saturate:100, warmth:0, vignette:0, blur:0 }
+            };
+            const p = presets[name];
+            if (!p) return;
+            $('f-bright').value = p.brightness;
+            $('f-contrast').value = p.contrast;
+            $('f-sat').value = p.saturate;
+            $('f-warm').value = p.warmth;
+            $('f-vig').value = p.vignette;
+            $('f-blur').value = p.blur;
+            currentFilters = { ...p };
+            $('f-bright-val').textContent = p.brightness + '%';
+            $('f-contrast-val').textContent = p.contrast + '%';
+            $('f-sat-val').textContent = p.saturate + '%';
+            $('f-warm-val').textContent = p.warmth;
+            $('f-vig-val').textContent = p.vignette;
+            $('f-blur-val').textContent = p.blur + 'px';
+            applyPreviewFilters();
+            showToast(`${name} look applied.`, 'fa-sliders', 'text-indigo-400');
+        };
+
+        function openEditor(imgSrc) {
+            currentEditorData = generatedResultsMap.get(imgSrc) || { url: imgSrc, history: [] };
+            editorImg.src = imgSrc;
+            typoBadge.value = ''; typoTitle.value = ''; typoSub.value = '';
+            typoFont.value = brandKit.font;
+            typoColor.value = '#ffffff'; typoColorHex.value = '#ffffff';
+            typoScrim.checked = false;
+            editPrompt.value = '';
+            ['bright','contrast','sat','warm','vig','blur'].forEach(k => {
+                const defaults = { bright:100, contrast:100, sat:100, warm:0, vig:0, blur:0 };
+                $('f-' + k).value = defaults[k];
+            });
+            currentFilters = { brightness:100, contrast:100, saturate:100, warmth:0, vignette:0, blur:0 };
+            editorImg.style.filter = '';
+            currentWatermark = false;
+            $('watermark-toggle').checked = false;
+
+            updateTypographyPreview();
+            document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('.editor-tab').classList.add('active');
+            ['typography', 'filters', 'templates', 'magic-edit'].forEach(t => $('tab-' + t).classList.toggle('hidden', t !== 'typography'));
+
+            editorModal.classList.remove('hidden');
+            setTimeout(() => {
+                editorModal.classList.remove('opacity-0');
+                editorSidebar.classList.remove('translate-x-full');
+            }, 10);
+        }
+        window.openEditor = openEditor;
+
+        function closeEditor() {
+            editorModal.classList.add('opacity-0');
+            editorSidebar.classList.add('translate-x-full');
+            setTimeout(() => {
+                editorModal.classList.add('hidden');
+                editorImg.src = "";
+                currentEditorData = null;
+                overlayPreview.classList.add('hidden');
+            }, 300);
+        }
+
+        editorClose.addEventListener('click', closeEditor);
+        editorModal.addEventListener('click', e => {
+            if (e.target === editorModal || e.target.closest('.flex-grow') === e.target) closeEditor();
+        });
+
+        $('editor-undo').addEventListener('click', () => {
+            typoBadge.value = ''; typoTitle.value = ''; typoSub.value = '';
+            typoScrim.checked = false;
+            ['bright','contrast','sat','warm','vig','blur'].forEach(k => {
+                const defaults = { bright:100, contrast:100, sat:100, warm:0, vig:0, blur:0 };
+                $('f-' + k).value = defaults[k];
+            });
+            currentFilters = { brightness:100, contrast:100, saturate:100, warmth:0, vignette:0, blur:0 };
+            editorImg.style.filter = '';
+            updateTypographyPreview();
+            showToast('Editor reset.', 'fa-rotate-left', 'text-gray-400');
+        });
+
+        window.quickEdit = (text) => { editPrompt.value = text; };
+
+        applyEditBtn.addEventListener('click', async () => {
+            if (!hasApiKey()) { openApiKeyModal(); return; }
+            const instruction = editPrompt.value.trim();
+            if (!instruction) { showToast("Enter an edit instruction.", 'fa-lightbulb', 'text-yellow-400'); return; }
+            if (!currentEditorData || !currentEditorData.history || currentEditorData.history.length === 0) {
+                showToast("Cannot edit. No history found.", 'fa-triangle-exclamation', 'text-yellow-400'); return;
+            }
+
+            applyEditBtn.classList.add('hidden');
+            editLoading.classList.remove('hidden');
+            editLoading.classList.add('flex');
+            editorImg.classList.add('opacity-50');
+
+            try {
+                const newHistory = [...currentEditorData.history];
+                newHistory.push({ role: 'user', parts: [{ text: instruction }] });
+                const ratio = document.querySelector('input[name="ratio"]:checked').value;
+                const resultData = await fetchSingleImage(newHistory, ratio, 0, null);
+                if (resultData && resultData.url) {
+                    editorImg.src = resultData.url;
+                    currentEditorData = resultData;
+                    generatedResultsMap.set(resultData.url, resultData);
+                    addToHistory(resultData.url);
+                    showToast("AI Edit applied!", 'fa-wand-magic-sparkles', 'text-purple-400');
+                    editPrompt.value = '';
+                } else { throw new Error("No image."); }
+            } catch (err) {
+                console.error(err);
+                showToast("Magic Edit failed.", 'fa-triangle-exclamation', 'text-red-400');
+            } finally {
+                applyEditBtn.classList.remove('hidden');
+                editLoading.classList.add('hidden');
+                editLoading.classList.remove('flex');
+                editorImg.classList.remove('opacity-50');
+            }
+        });
+
+        // ============================================
+        // EXPORT
+        // ============================================
+        async function performDownload(fromEditor = true) {
+            if (!currentEditorData) return;
+            const btn = editorDownload;
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>...';
+            btn.disabled = true;
+
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = async () => {
+                const canvas = document.createElement('canvas');
+                const scaleFactor = 2;
+                canvas.width = img.width * scaleFactor;
+                canvas.height = img.height * scaleFactor;
+                const ctx = canvas.getContext('2d');
+
+                ctx.filter = `brightness(${currentFilters.brightness}%) contrast(${currentFilters.contrast}%) saturate(${currentFilters.saturate}%) blur(${currentFilters.blur}px)`;
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                ctx.filter = 'none';
+
+                if (currentFilters.warmth !== 0) {
+                    const warm = currentFilters.warmth;
+                    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const d = imgData.data;
+                    for (let i = 0; i < d.length; i += 4) {
+                        d[i] = Math.min(255, Math.max(0, d[i] + warm * 2));
+                        d[i+2] = Math.min(255, Math.max(0, d[i+2] - warm * 2));
+                    }
+                    ctx.putImageData(imgData, 0, 0);
+                }
+
+                if (currentFilters.vignette > 0) {
+                    const grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, canvas.width*0.25, canvas.width/2, canvas.height/2, canvas.width*0.75);
+                    grad.addColorStop(0, 'rgba(0,0,0,0)');
+                    grad.addColorStop(1, `rgba(0,0,0,${currentFilters.vignette/100})`);
+                    ctx.fillStyle = grad;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+
+                if (typoBadge.value || typoTitle.value || typoSub.value) {
+                    const { heading, body } = getFontPair();
+                    try { await document.fonts.ready; } catch(e) {}
+
+                    if (typoScrim.checked) {
+                        const pos = typoPos.value;
+                        const grad = pos === 'bottom'
+                            ? ctx.createLinearGradient(0, canvas.height*0.55, 0, canvas.height)
+                            : ctx.createLinearGradient(0, 0, 0, canvas.height*0.45);
+                        grad.addColorStop(0, 'rgba(0,0,0,0)');
+                        grad.addColorStop(1, 'rgba(0,0,0,0.65)');
+                        ctx.fillStyle = grad;
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    }
+
+                    ctx.textAlign = 'center';
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+                    ctx.shadowBlur = 20 * scaleFactor;
+                    ctx.shadowOffsetY = 5 * scaleFactor;
+                    ctx.fillStyle = typoColor.value;
+
+                    const centerX = canvas.width / 2;
+                    const pos = typoPos.value;
+                    let baseY = pos === 'top' ? canvas.height * 0.15 : pos === 'bottom' ? canvas.height * 0.75 : canvas.height * 0.42;
+
+                    if (typoBadge.value) {
+                        const badgeFontSize = 22 * scaleFactor;
+                        ctx.font = `700 ${badgeFontSize}px '${body}', sans-serif`;
+                        ctx.fillText(typoBadge.value.toUpperCase(), centerX, baseY);
+                        baseY += badgeFontSize * 2;
+                    }
+                    if (typoTitle.value) {
+                        const titleFontSize = 72 * scaleFactor;
+                        ctx.font = `700 ${titleFontSize}px '${heading}', serif`;
+                        const lines = wrapText(ctx, typoTitle.value, canvas.width * 0.85);
+                        lines.forEach((line, i) => {
+                            ctx.fillText(line, centerX, baseY + i * titleFontSize * 1.15);
+                        });
+                        baseY += lines.length * titleFontSize * 1.15 + titleFontSize * 0.4;
+                    }
+                    if (typoSub.value) {
+                        const subFontSize = 30 * scaleFactor;
+                        ctx.font = `400 ${subFontSize}px '${body}', sans-serif`;
+                        typoSub.value.split('\n').forEach((line, i) => {
+                            ctx.fillText(line, centerX, baseY + i * subFontSize * 1.5);
+                        });
+                    }
+                    ctx.shadowColor = 'transparent';
+                }
+
+                if (currentWatermark && brandKit.logo) {
+                    try {
+                        const logoImg = await new Promise((res, rej) => {
+                            const li = new Image();
+                            li.crossOrigin = 'anonymous';
+                            li.onload = () => res(li);
+                            li.onerror = rej;
+                            li.src = brandKit.logo;
+                        });
+                        const logoH = canvas.height * 0.06;
+                        const logoW = (logoImg.width / logoImg.height) * logoH;
+                        const pad = canvas.width * 0.035;
+                        ctx.globalAlpha = 0.85;
+                        ctx.drawImage(logoImg, canvas.width - logoW - pad, canvas.height - logoH - pad, logoW, logoH);
+                        ctx.globalAlpha = 1;
+                    } catch(e) {}
+                }
+
+                const highResDataUrl = canvas.toDataURL('image/png', 1.0);
+                const a = document.createElement('a');
+                a.href = highResDataUrl;
+                a.download = `WithMomma_${Date.now()}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                if (fromEditor) {
+                    btn.innerHTML = originalHtml;
+                    btn.disabled = false;
+                    showToast("Downloaded!", 'fa-download', 'text-green-400');
+                }
+            };
+            img.onerror = () => {
+                if (fromEditor) {
+                    btn.innerHTML = originalHtml;
+                    btn.disabled = false;
+                    showToast("Download failed.", 'fa-triangle-exclamation', 'text-red-400');
+                }
+            };
+            img.src = currentEditorData.url;
+        }
+
+        function wrapText(ctx, text, maxWidth) {
+            const words = text.split(' ');
+            const lines = [];
+            let current = '';
+            for (const w of words) {
+                const test = current ? current + ' ' + w : w;
+                if (ctx.measureText(test).width > maxWidth && current) {
+                    lines.push(current);
+                    current = w;
+                } else current = test;
+            }
+            if (current) lines.push(current);
+            return lines;
+        }
+
+        editorDownload.addEventListener('click', () => performDownload(true));
+
+        // ============================================
+        // CONTENT STUDIO
+        // ============================================
+        window.openContentStudio = () => {
+            $('content-studio').classList.remove('hidden');
+            $('content-studio').classList.add('flex');
+            syncPromptToStudio();
+        };
+        window.closeContentStudio = () => {
+            $('content-studio').classList.add('hidden');
+            $('content-studio').classList.remove('flex');
+        };
+        window.syncPromptToStudio = () => {
+            if (promptInput.value.trim()) $('cs-source').value = promptInput.value.trim();
+        };
+
+        const csPrompts = {
+            caption: `Write 3 short, warm, brand-appropriate Instagram captions for a premium maternity/parenting brand called "${brandKit.name}". Tone: warm, reassuring, empowering. 1-2 sentences each. Separate each with a blank line and prefix with "•".`,
+            hashtags: `Generate 25 relevant hashtags for a premium parenting brand post about the following topic. Mix niche + mid-tier + broad tags. Output as a single space-separated line ready to paste. Topic:`,
+            alt: `Write a detailed accessibility alt-text (1-2 sentences) for the following image description. Be descriptive, neutral tone, mention subject, action, setting, and mood. Output only the alt-text. Image:`,
+            hooks: `Write 5 scroll-stopping hook lines for a Pinterest pin or Reel opening. Short, punchy, emotion-driven. Parenting/mom niche. Max 8 words each. Output as a numbered list. Topic:`,
+            cta: `Write 5 call-to-action lines for a premium parenting brand. Warm, inviting, not salesy. Suitable for Pinterest pins or IG carousels. Output as a numbered list. Topic:`,
+            ideas: `Generate 8 content ideas (specific, producible image or carousel concepts) for a premium parenting brand. Each idea = short title + one-sentence description. Output as a numbered list. Topic:`
+        };
+        const csLabels = { caption:'Caption Variations', hashtags:'Hashtag Set', alt:'Alt-Text', hooks:'Hook Lines', cta:'CTAs', ideas:'Content Ideas' };
+
+        window.generateContent = async (type) => {
+            if (!hasApiKey()) { openApiKeyModal(); return; }
+            const source = $('cs-source').value.trim() || promptInput.value.trim();
+            if (!source) { showToast('Add a topic first.', 'fa-lightbulb', 'text-yellow-400'); return; }
+
+            $('cs-output-wrap').classList.add('hidden');
+            $('cs-loading').classList.remove('hidden');
+            $('cs-loading').classList.add('flex');
+
+            const systemPrompt = `You are a senior social media strategist and copywriter for a premium, warm, modern parenting brand called "${brandKit.name}". You write in a calm, reassuring, empowering voice. Avoid clichés and salesy language.`;
+            const userPrompt = csPrompts[type] + '\n\nSource: ' + source;
+
+            try {
+                const res = await fetch(getTextApiUrl(), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: userPrompt }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    })
+                });
+                const data = await res.json();
+                const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No output.';
+                $('cs-output').textContent = text.trim();
+                $('cs-output-label').textContent = csLabels[type];
+                $('cs-output-wrap').classList.remove('hidden');
+                window._csCurrentText = text.trim();
+            } catch (e) {
+                console.error(e);
+                $('cs-output').textContent = 'Failed. Try again.';
+                $('cs-output-label').textContent = 'Error';
+                $('cs-output-wrap').classList.remove('hidden');
+            } finally {
+                $('cs-loading').classList.add('hidden');
+                $('cs-loading').classList.remove('flex');
+            }
+        };
+
+        window.copyCsOutput = () => {
+            const text = window._csCurrentText || $('cs-output').textContent;
+            navigator.clipboard.writeText(text).then(() => showToast('Copied.', 'fa-copy', 'text-blue-400'));
+        };
+
+        // ============================================
+        // COMMAND PALETTE
+        // ============================================
+        const commands = [
+            { label: 'Generate Variations', icon: 'fa-layer-group', action: () => form.requestSubmit() },
+            { label: 'Open Prompt Library', icon: 'fa-bookmark', action: () => openPromptLibrary() },
+            { label: 'Open Content Studio', icon: 'fa-feather-pointed', action: () => openContentStudio() },
+            { label: 'Set API Key', icon: 'fa-key', action: () => openApiKeyModal() },
+            { label: 'Maternity Preset', icon: 'fa-heart', action: () => applyPreset('maternity') },
+            { label: 'Toddler Preset', icon: 'fa-child', action: () => applyPreset('toddler') },
+            { label: 'Nursery Preset', icon: 'fa-couch', action: () => applyPreset('nursery') },
+            { label: 'Reel Cover Preset', icon: 'fa-mobile-screen', action: () => applyPreset('reel') },
+            { label: 'Toggle Dark Mode', icon: 'fa-moon', action: () => toggleDarkMode() },
+            { label: 'Scroll to History', icon: 'fa-clock-rotate-left', action: () => $('history-section').scrollIntoView({behavior:'smooth'}) },
+            { label: 'Magic Enhance Prompt', icon: 'fa-wand-magic-sparkles', action: () => magicBtn.click() }
+        ];
+
+        let cmdActiveIndex = 0;
+
+        function renderCmdResults(query='') {
+            const container = $('cmd-results');
+            const q = query.toLowerCase();
+            const matches = commands.filter(c => c.label.toLowerCase().includes(q));
+            if (matches.length === 0) {
+                container.innerHTML = `
+                    <div class="p-4 text-center">
+                        <p class="text-xs text-gray-500 mb-2">No matching command.</p>
+                        <button onclick="usePromptFromCmd('${escapeHtml(query).replace(/'/g,"\\'")}')" class="text-xs bg-momma-sage text-white px-4 py-2 rounded-lg font-medium hover:bg-momma-dark transition">Use "${escapeHtml(query).slice(0,40)}" as prompt</button>
+                    </div>
+                `;
+                return;
+            }
+            cmdActiveIndex = Math.min(cmdActiveIndex, matches.length - 1);
+            container.innerHTML = matches.map((c, i) => `
+                <div class="cmd-item flex items-center gap-3 px-3 py-2.5 rounded-lg ${i === cmdActiveIndex ? 'active' : ''}" onclick="runCmd(${commands.indexOf(c)})">
+                    <i class="fa-solid ${c.icon} text-momma-sage w-4"></i>
+                    <span class="text-sm text-gray-700">${c.label}</span>
+                </div>
+            `).join('');
+        }
+
+        window.runCmd = idx => { closeCmdPalette(); commands[idx].action(); };
+        window.usePromptFromCmd = text => {
+            promptInput.value = text;
+            promptInput.dispatchEvent(new Event('input'));
+            closeCmdPalette();
+            showToast('Prompt set.', 'fa-check', 'text-green-400');
+        };
+
+        window.openCmdPalette = () => {
+            $('cmd-palette').classList.remove('hidden');
+            $('cmd-palette').classList.add('flex');
+            $('cmd-input').value = '';
+            cmdActiveIndex = 0;
+            renderCmdResults('');
+            setTimeout(() => $('cmd-input').focus(), 50);
+        };
+        function closeCmdPalette() {
+            $('cmd-palette').classList.add('hidden');
+            $('cmd-palette').classList.remove('flex');
+        }
+        window.closeCmdPalette = closeCmdPalette;
+
+        $('cmd-input').addEventListener('input', e => {
+            cmdActiveIndex = 0;
+            renderCmdResults(e.target.value);
+        });
+
+        $('cmd-input').addEventListener('keydown', e => {
+            const matches = commands.filter(c => c.label.toLowerCase().includes($('cmd-input').value.toLowerCase()));
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                cmdActiveIndex = Math.min(cmdActiveIndex + 1, matches.length - 1);
+                renderCmdResults($('cmd-input').value);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                cmdActiveIndex = Math.max(cmdActiveIndex - 1, 0);
+                renderCmdResults($('cmd-input').value);
+            } else if (e.key === 'Enter') {
+                if (matches[cmdActiveIndex]) runCmd(commands.indexOf(matches[cmdActiveIndex]));
+                else usePromptFromCmd($('cmd-input').value);
+            }
+        });
+
+        $('cmd-palette').addEventListener('click', e => {
+            if (e.target === $('cmd-palette')) closeCmdPalette();
+        });
+
+        // ============================================
+        // KEYBOARD SHORTCUTS
+        // ============================================
+        document.addEventListener('keydown', e => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openCmdPalette(); }
+            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+                if (document.activeElement === promptInput) {
+                    e.preventDefault();
+                    form.requestSubmit();
+                }
+            }
+            if (e.key === 'Escape') {
+                if (!$('cmd-palette').classList.contains('hidden')) closeCmdPalette();
+                else if (!$('content-studio').classList.contains('hidden')) closeContentStudio();
+                else if (!$('prompt-library').classList.contains('hidden')) closePromptLibrary();
+                else if (!$('api-modal').classList.contains('hidden')) closeApiKeyModal();
+                else if (!editorModal.classList.contains('hidden')) closeEditor();
+            }
+        });
+
+        // ============================================
+        // SERVICE WORKER REGISTRATION
+        // ============================================
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => console.log('SW registered:', reg.scope))
+                    .catch(err => console.warn('SW registration failed:', err));
+            });
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        form.addEventListener('submit', handleGenerate);
+        promptInput.dispatchEvent(new Event('input'));
+        renderHistory();
+        updateApiBanner();
+
+        // Welcome
+        setTimeout(() => {
+            if (!hasApiKey()) {
+                showToast('Set API Key dulu untuk mulai generate.', 'fa-key', 'text-amber-400');
+            } else {
+                showToast('Tip: Press ⌘K untuk command palette.', 'fa-lightbulb', 'text-yellow-400');
+            }
+        }, 1200);
+    </script>
+</body>
+</html>
